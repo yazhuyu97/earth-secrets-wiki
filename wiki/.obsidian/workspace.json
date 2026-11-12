@@ -1,0 +1,262 @@
+{
+  "main": {
+    "id": "f16148a7d50200d7",
+    "type": "split",
+    "children": [
+      {
+        "id": "7bacbe7662209649",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "255a21e275b265d5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "concepts/地震波與地球內部構造.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "地震波與地球內部構造"
+            }
+          },
+          {
+            "id": "f9d8514266bfa04c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/docs/graph/Graph.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Graph"
+            }
+          },
+          {
+            "id": "fdcded3e90ae2ee0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/AGENTS.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AGENTS"
+            }
+          },
+          {
+            "id": "6619386f42070667",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/Graph檢查報告.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Graph檢查報告"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "25e1a4c1e95ba900",
+    "type": "split",
+    "children": [
+      {
+        "id": "36b1ee23d2a90e05",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fa931b8da2324f6b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "檔案瀏覽器"
+            }
+          },
+          {
+            "id": "06c2b0176eff3e88",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜尋"
+            }
+          },
+          {
+            "id": "2445d8339c37c62b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "書籤"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "123f5a7b701f4569",
+    "type": "split",
+    "children": [
+      {
+        "id": "692ae047bec838a8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "464f9def27d3a64a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/Graph檢查報告.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向連結"
+            }
+          },
+          {
+            "id": "a774b96e7b83338d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/Graph檢查報告.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "對外連結"
+            }
+          },
+          {
+            "id": "d1248fae7438fe70",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "標籤"
+            }
+          },
+          {
+            "id": "266872cb66f80209",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "所有屬性"
+            }
+          },
+          {
+            "id": "dee8aa332b6d32fd",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/Graph檢查報告.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大綱"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "canvas:建立新畫布": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
+      "bases:建立新的 base": false
+    }
+  },
+  "active": "6619386f42070667",
+  "lastOpenFiles": [
+    "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/AGENTS.md",
+    "file:C:/Users/0/.gemini/antigravity/scratch/earth-secrets-wiki/docs/graph/Graph.md",
+    "concepts/地震波與地球內部構造.md",
+    "concepts/地球元素分異作用.md",
+    "concepts/太陽風與極光.md",
+    "concepts/太陽元素分異作用.md",
+    "concepts/大氣演化與氧氣革命.md",
+    "theories/稀有地球假說.md",
+    "theories/星雲假說.md",
+    "syntheses/金星地球火星大氣演化比較.md",
+    "syntheses/地球歷史與大尺度演化時間軸.md",
+    "syntheses/八大行星與矮行星綜合比較.md",
+    "sources/S01-課程介紹.md",
+    "sources/S03-固體地球的演化.md",
+    "sources/S02-星球的誕生.md",
+    "entities/矮行星與小行星帶.md",
+    "entities/台灣大地構造與地質分區.md",
+    "entities/月球.md",
+    "entities/太陽.md",
+    "concepts/隱沒工廠.md",
+    "concepts/微行星吸積.md",
+    "concepts/海底擴張與古地磁條帶.md",
+    "concepts/板塊構造學說.md",
+    "concepts/行星定義.md",
+    "concepts/次生大氣與火山去氣.md"
+  ]
+}

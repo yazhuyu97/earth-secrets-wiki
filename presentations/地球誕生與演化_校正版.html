@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="依 PresentationGraph 規範檢查與修正的地球誕生與演化簡報。" name="description"/>
+<meta content="2.0.0" name="presentation-version"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>地球的誕生與演化｜教材來源校正版</title>
+<style>
+    :root {
+      --bg-space: #060913;
+      --bg-card: rgba(13, 20, 38, 0.78);
+      --bg-card-border: rgba(56, 189, 248, 0.22);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;     /* 水圈與海洋 */
+      --accent-gold: #f59e0b;     /* 岩漿與核心熱能 */
+      --accent-emerald: #10b981;  /* 生物圈與植被 */
+      --accent-rose: #f43f5e;     /* 火山與板塊造山 */
+      --accent-purple: #a855f7;   /* 星雲與大歷史 */
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      user-select: none;
+      background-image: 
+        radial-gradient(1px 1px at 30px 40px, #ffffff 100%, transparent),
+        radial-gradient(1.5px 1.5px at 150px 90px, rgba(255,255,255,0.7) 100%, transparent),
+        radial-gradient(1.2px 1.2px at 280px 220px, rgba(56,189,248,0.8) 100%, transparent),
+        radial-gradient(2px 2px at 420px 310px, rgba(245,158,11,0.6) 100%, transparent),
+        radial-gradient(1px 1px at 560px 140px, #ffffff 100%, transparent),
+        radial-gradient(circle at 20% 80%, rgba(244, 63, 94, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.07) 0%, transparent 65%),
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+      background-size: 600px 600px, 500px 500px, 700px 700px, 800px 800px, 550px 550px, 100% 100%, 100% 100%, 100% 100%;
+    }
+
+    /* Top Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-rose), var(--accent-gold), var(--accent-emerald), var(--accent-cyan));
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    }
+
+    /* Presentation Deck */
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90vw;
+      max-width: 1350px;
+      height: 84vh;
+      max-height: 820px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 20px;
+      padding: 44px 54px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.1);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(24px) scale(0.98);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-cyan) transparent;
+    }
+
+    .slide::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide::-webkit-scrollbar-thumb {
+      background: var(--accent-cyan);
+      border-radius: 3px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      z-index: 10;
+    }
+
+    /* Badges & Titles */
+    .badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 5px 13px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+    .badge.gold {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .badge.emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .badge.rose {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose);
+      border-color: rgba(244, 63, 94, 0.35);
+    }
+    .badge.purple {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-purple);
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+
+    h1.slide-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      flex: 1;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      flex: 1;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+
+    .card {
+      background: rgba(26, 36, 60, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    .card.highlight {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(26, 36, 60, 0.75);
+    }
+    .card.gold-border { border-color: rgba(245, 158, 11, 0.4); }
+    .card.rose-border { border-color: rgba(244, 63, 94, 0.4); }
+    .card.emerald-border { border-color: rgba(16, 185, 129, 0.4); }
+    .card.purple-border { border-color: rgba(168, 85, 247, 0.4); }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .card ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    /* Flow Steps */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(26, 36, 60, 0.5);
+      padding: 14px 18px;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-cyan);
+    }
+    .step-item.gold { border-left-color: var(--accent-gold); }
+    .step-item.emerald { border-left-color: var(--accent-emerald); }
+    .step-item.rose { border-left-color: var(--accent-rose); }
+    .step-item.purple { border-left-color: var(--accent-purple); }
+
+    .step-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      min-width: 32px;
+    }
+    .step-item.gold .step-num { color: var(--accent-gold); }
+    .step-item.emerald .step-num { color: var(--accent-emerald); }
+    .step-item.rose .step-num { color: var(--accent-rose); }
+    .step-item.purple .step-num { color: var(--accent-purple); }
+
+    .step-content h4 {
+      font-size: 1.02rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+    .step-content p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Comparison Table */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex: 1;
+    }
+    table.slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    table.slide-table th {
+      background: rgba(26, 36, 60, 0.95);
+      padding: 12px 14px;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+      white-space: nowrap;
+    }
+    table.slide-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+    table.slide-table tr:hover td {
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    /* Callout Box */
+    .callout {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .callout-icon { font-size: 1.3rem; }
+
+    /* Bottom Control Bar */
+    .controls {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(13, 20, 38, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 8px 22px;
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .btn {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+      font-size: 1.1rem;
+    }
+    .btn:hover {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-cyan);
+    }
+    .btn:active { transform: scale(0.92); }
+    .slide-counter {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      min-width: 60px;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+    .btn-text {
+      border-radius: 6px;
+      width: auto;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .btn-text:hover { color: #fff; }
+
+    /* Overview Grid Modal */
+    .overview-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(6, 9, 19, 0.94);
+      backdrop-filter: blur(20px);
+      z-index: 2000;
+      padding: 50px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 20px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .overview-grid.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .thumb {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      height: 160px;
+    }
+    .thumb:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.25);
+    }
+    .thumb.active-thumb {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+    .thumb-num {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 5px;
+    }
+    .thumb-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+    .thumb-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+    }
+    .close-overview {
+      position: fixed;
+      top: 18px;
+      right: 28px;
+      font-size: 1.4rem;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 2001;
+    }
+
+    /* Title Slide Special */
+    .title-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.08) 35%, rgba(13, 20, 38, 0.8) 75%);
+    }
+    .title-slide h1 {
+      font-size: 3.3rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      line-height: 1.18;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-emerald) 70%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .title-slide h2 {
+      font-size: 1.55rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 26px;
+    }
+    .title-meta {
+      font-size: 0.98rem;
+      color: #94a3b8;
+      max-width: 720px;
+      line-height: 1.8;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 18px;
+    }
+
+    /* Deck Ambient Animation */
+    @keyframes pulse-space {
+      0%, 100% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.15); }
+      50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.25); }
+    }
+    .deck { animation: pulse-space 7s infinite ease-in-out; }
+  
+.source-note{margin-top:18px;padding:8px 11px;border-top:1px solid rgba(120,140,130,.25);font-size:.72rem;line-height:1.5;color:var(--muted,#66736b);}.source-note strong{color:var(--text,#34433a)}.source-caveat{opacity:.9}
+</style>
+<style>
+:root {
+  --bg-space: #F8F4EC;
+  --bg-card: rgba(255, 253, 248, 0.96);
+  --bg-card-border: rgba(148, 166, 157, 0.42);
+  --text-main: #514F4A;
+  --text-muted: #8E9089;
+  --accent-cyan: #94A69D;
+  --accent-gold: #C09A97;
+  --accent-emerald: #94A69D;
+  --accent-rose: #C09A97;
+  --accent-purple: #B5A6B8;
+  --font-family: "Zen Maru Gothic", "Yu Gothic UI", "Hiragino Maru Gothic ProN",
+    "Noto Sans TC", "Microsoft JhengHei", Helvetica, sans-serif;
+}
+html, body {
+  background-color: #F8F4EC;
+  color: #514F4A;
+  font-family: var(--font-family);
+}
+body {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(192,154,151,.13) 0 2px, transparent 3px),
+    radial-gradient(circle at 86% 78%, rgba(148,166,157,.16) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 14%, rgba(239,219,178,.24) 0 3px, transparent 4px),
+    repeating-linear-gradient(0deg, rgba(142,144,137,.025) 0 1px, transparent 1px 5px),
+    linear-gradient(135deg, #FBF8F1, #F4F0E7);
+  background-size: 180px 180px, 220px 220px, 260px 260px, auto, auto;
+}
+.progress-bar-container {
+  height: 7px;
+  background: rgba(192,154,151,.18);
+  box-shadow: 0 2px 10px rgba(80,70,60,.06);
+}
+.progress-bar {
+  background: linear-gradient(90deg, #C09A97 0%, #E8D0BB 48%, #94A69D 100%);
+  box-shadow: 0 0 10px rgba(148,166,157,.28);
+}
+.slide {
+  position: absolute;
+  background:
+    radial-gradient(circle at 96% 5%, rgba(239,219,178,.17), transparent 22%),
+    rgba(255,253,248,.97);
+  border: 1px solid rgba(148,166,157,.38);
+  border-radius: 28px;
+  padding: 42px 48px 94px;
+  box-shadow: 0 18px 48px rgba(105,94,80,.12), 0 3px 10px rgba(105,94,80,.05);
+  backdrop-filter: blur(12px);
+  scrollbar-color: #C09A97 transparent;
+}
+.slide::-webkit-scrollbar-thumb { background: #C09A97; border-radius: 8px; }
+.badge {
+  background: #EAF0EB;
+  color: #657C70;
+  border: 1px solid rgba(148,166,157,.5);
+  border-radius: 999px;
+  letter-spacing: .04em;
+  font-size: .78rem;
+}
+.badge.gold { background:#F7EEE6; color:#A87970; border-color:#E8D0BB; }
+.badge.emerald { background:#EAF0EB; color:#657C70; border-color:#B8C8BE; }
+.badge.rose { background:#F7EDEC; color:#A97875; border-color:#E5C9C5; }
+.badge.purple { background:#F1EDF2; color:#817387; border-color:#D7CBD9; }
+h1.slide-title {
+  color: #625B55;
+  background: linear-gradient(110deg, #74635F 5%, #94A69D 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: .015em;
+  line-height: 1.28;
+}
+p.slide-subtitle { color:#8E9089; }
+.card, .step-item {
+  background: rgba(255,255,252,.86);
+  border: 1px solid rgba(148,166,157,.30);
+  border-radius: 20px;
+  box-shadow: 0 5px 16px rgba(111,102,91,.055);
+}
+.card:hover {
+  border-color: #C09A97;
+  box-shadow: 0 10px 22px rgba(160,132,126,.12);
+}
+.card.highlight { background: #F1F5F0; border-color:#AABCB1; }
+.card.gold-border { border-color:#E8D0BB; }
+.card.rose-border { border-color:#DAB8B5; }
+.card.emerald-border { border-color:#B8C8BE; }
+.card.purple-border { border-color:#D7CBD9; }
+.card h3 { color:#6C655E; }
+.card p, .card li { color:#77766F; }
+.step-item { border-left: 5px solid #94A69D; }
+.step-item.gold { border-left-color:#C09A97; }
+.step-item.emerald { border-left-color:#94A69D; }
+.step-item.rose { border-left-color:#C09A97; }
+.step-item.purple { border-left-color:#B5A6B8; }
+.step-num { color:#71877B; }
+.step-item.gold .step-num, .step-item.rose .step-num { color:#A87970; }
+.step-item.emerald .step-num { color:#71877B; }
+.step-item.purple .step-num { color:#897B8D; }
+.step-content h4 { color:#625B55; }
+.step-content p { color:#85847D; }
+.table-container {
+  border-radius: 20px;
+  border: 1px solid rgba(148,166,157,.42);
+  overflow: hidden;
+  background:#FFFEFA;
+  box-shadow: 0 6px 18px rgba(111,102,91,.06);
+}
+table.slide-table { border-collapse: separate; border-spacing:0; color:#625F58; }
+table.slide-table th {
+  background:#EAF0EB;
+  color:#61776B;
+  border-bottom:2px solid #C7D5CB;
+}
+table.slide-table td {
+  color:#716E67;
+  border-bottom:1px solid #EEE9E0;
+}
+table.slide-table tr:nth-child(even) td { background:#FBF8F2; }
+table.slide-table tr:hover td { background:#F7EEEA; }
+.callout {
+  background:#F8F1EA;
+  border:1px dashed #D9B9B2;
+  border-radius:18px;
+  color:#756A63;
+}
+.controls {
+  background:rgba(255,253,248,.94);
+  border:1px solid rgba(148,166,157,.38);
+  box-shadow:0 8px 24px rgba(105,94,80,.14);
+  backdrop-filter:blur(14px);
+}
+.btn { color:#74877D; }
+.btn:hover { background:#EAF0EB; color:#A87970; }
+.slide-counter { color:#A87970; }
+.btn-text { color:#8E9089; }
+.btn-text:hover { color:#657C70; }
+.overview-grid {
+  background:rgba(248,244,236,.97);
+  backdrop-filter:blur(18px);
+}
+.thumb {
+  background:#FFFEFA;
+  border:1px solid rgba(148,166,157,.36);
+  border-radius:20px;
+  box-shadow:0 5px 14px rgba(105,94,80,.06);
+}
+.thumb:hover { border-color:#C09A97; box-shadow:0 10px 22px rgba(160,132,126,.13); }
+.thumb.active-thumb { border-color:#94A69D; box-shadow:0 0 0 3px rgba(148,166,157,.18); }
+.thumb-num { color:#A87970; }
+.thumb-title { color:#625B55; }
+.thumb-desc { color:#8E9089; }
+.title-slide {
+  justify-content:center;
+  align-items:flex-start;
+  background:
+    radial-gradient(circle at 82% 22%, rgba(239,219,178,.38), transparent 25%),
+    radial-gradient(circle at 15% 88%, rgba(192,154,151,.16), transparent 30%),
+    linear-gradient(135deg,#FFFCF6,#F2F5EF);
+}
+.title-slide h1.slide-title {
+  font-size:clamp(2.8rem,5vw,5rem);
+  max-width:850px;
+  margin-top:10px;
+}
+.title-slide h2 {
+  color:#8E9089;
+  font-weight:500;
+  font-size:clamp(1.15rem,2vw,1.65rem);
+  letter-spacing:.08em;
+}
+.cover-subtitle {
+  margin-top:22px;
+  padding:14px 22px;
+  border-radius:999px;
+  color:#7A8178;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(148,166,157,.35);
+  font-size:1rem;
+}
+.slide-role {
+  position:absolute;
+  right:28px;
+  bottom:16px;
+  width:clamp(88px, 11vw, 148px);
+  max-height:25%;
+  object-fit:contain;
+  object-position:right bottom;
+  z-index:3;
+  pointer-events:none;
+  filter:drop-shadow(0 5px 5px rgba(90,80,70,.13));
+}
+.title-slide .slide-role {
+  width:clamp(160px, 22vw, 260px);
+  max-height:42%;
+  right:42px;
+  bottom:28px;
+}
+@media (max-width: 760px) {
+  .slide { width:96vw; height:88vh; padding:28px 22px 100px; border-radius:22px; }
+  .slide-role { width:86px; right:12px; bottom:12px; }
+  .title-slide .slide-role { width:150px; right:14px; bottom:16px; }
+  h1.slide-title { font-size:1.7rem; }
+  .grid-4 { grid-template-columns:repeat(2,1fr); }
+  .grid-3 { grid-template-columns:repeat(1,1fr); }
+}
+</style>
+<style id="graph-standard-overrides">
+  :root {
+    --font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC",
+      "Yu Gothic", "Meiryo", sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-family); }
+  .slide {
+    isolation: isolate;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .slide:not(.title-slide)::after {
+    content: "";
+    position: absolute;
+    right: 24px;
+    bottom: 18px;
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    border: 1px solid rgba(148,166,157,.35);
+    background:
+      radial-gradient(circle at 34% 32%, rgba(255,255,255,.9) 0 5%, transparent 6%),
+      radial-gradient(circle at 38% 38%, rgba(192,154,151,.22), rgba(148,166,157,.12) 58%, rgba(239,219,178,.18) 72%, transparent 74%);
+    box-shadow: 0 0 0 8px rgba(148,166,157,.045), 0 8px 24px rgba(105,94,80,.08);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .slide > * { position: relative; z-index: 1; }
+  .slide::after { z-index: 0 !important; }
+  .title-slide::after {
+    content: "";
+    position: absolute;
+    right: clamp(24px, 6vw, 90px);
+    bottom: clamp(30px, 7vh, 76px);
+    width: clamp(150px, 22vw, 270px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(148,166,157,.32);
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0 4%, transparent 5%),
+      radial-gradient(circle at 36% 35%, #E9EFE7 0 13%, #B9C9BE 34%, #DCCBC1 58%, #F3E8D9 72%, transparent 73%);
+    box-shadow: 0 0 0 14px rgba(148,166,157,.06), 0 0 0 34px rgba(192,154,151,.045), 0 18px 50px rgba(105,94,80,.12);
+    pointer-events: none;
+    z-index: 0 !important;
+  }
+  .title-slide > * { z-index: 1; }
+  .progress-bar-container {
+    z-index: 1100;
+    overflow: hidden;
+  }
+  .controls { z-index: 1100; }
+  .btn:focus-visible, .btn-text:focus-visible, .thumb:focus-visible,
+  .close-overview:focus-visible {
+    outline: 3px solid #A87970;
+    outline-offset: 3px;
+  }
+  .btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+  .overview-grid {
+    z-index: 2000;
+    grid-template-columns: repeat(auto-fill, minmax(min(270px, 100%), 1fr));
+    align-content: start;
+    padding-bottom: 90px;
+  }
+  .thumb {
+    min-width: 0;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .thumb-title, .thumb-desc { overflow-wrap: anywhere; }
+  .slide-table td, .slide-table th { white-space: normal; }
+  .table-container { overflow-x: auto; }
+  @media (max-width: 760px) {
+    body { overflow: hidden; }
+    .slide {
+      width: 96vw;
+      height: 88vh;
+      padding: 26px 20px 104px;
+    }
+    .title-slide { align-items: flex-start; }
+    .title-slide h1.slide-title {
+      max-width: 100%;
+      font-size: clamp(2.2rem, 9vw, 3.4rem);
+    }
+    .title-slide::after {
+      width: 128px;
+      right: 18px;
+      bottom: 88px;
+      opacity: .72;
+    }
+    .slide:not(.title-slide)::after {
+      width: 48px;
+      height: 48px;
+      right: 12px;
+      bottom: 10px;
+    }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .controls {
+      bottom: max(10px, env(safe-area-inset-bottom));
+      gap: 8px;
+      padding: 6px 10px;
+      max-width: calc(100vw - 20px);
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+    .controls > * { flex-shrink: 0; }
+    .btn { width: 32px; height: 32px; }
+    .btn-text { padding: 4px 7px; white-space: nowrap; }
+    .slide-counter { min-width: 52px; font-size: .82rem; }
+    .overview-grid { padding: 58px 16px 90px; }
+    .thumb { height: auto; min-height: 130px; }
+  }
+  @media (max-width: 420px) {
+    .grid-4 { grid-template-columns: 1fr; }
+    h1.slide-title { font-size: 1.55rem; }
+    .card { padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+    }
+  }
+  @media print {
+    body { width: auto; height: auto; overflow: visible; background: #fff !important; color: #333 !important; }
+    .deck { display: block; height: auto; animation: none; }
+    .slide {
+      position: relative !important;
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
+      max-width: none !important;
+      margin: 0 auto 12mm;
+      overflow: visible !important;
+      break-after: page;
+      box-shadow: none !important;
+    }
+    .controls, .progress-bar-container, .overview-grid { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<!-- Top Progress Bar -->
+<div aria-label="簡報進度" aria-valuemax="15" aria-valuemin="1" aria-valuenow="1" class="progress-bar-container" role="progressbar">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<!-- Deck Container -->
+<div class="deck">
+<!-- Slide 1: 封面 -->
+<div aria-hidden="false" class="slide title-slide active" data-slide-id="earth-01" data-source-ref="地球誕生與演化_日系風格(1).html#slide-01" data-title="封面" id="earth-slide-01" tabindex="-1">
+<span class="badge emerald">A LITTLE JOURNEY THROUGH EARTH HISTORY</span>
+<h1 class="slide-title">地球的誕生與演化</h1>
+<h2>Birth and Evolution of the Earth</h2>
+<p class="cover-subtitle">從星塵、海洋到生命，探索 46 億年的地球故事</p><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 1 講第 1 頁；第 2–5 講課程教材<span class="source-caveat">｜封面主題依課程教材整理。</span></aside></div>
+<!-- Slide 2: 宏觀地質年代尺度 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-02" data-source-ref="地球誕生與演化_日系風格(1).html#slide-02" data-title="地球演化的主要階段" id="earth-slide-02" tabindex="-1"><span class="badge">時間尺度</span><h1 class="slide-title">地球演化的主要階段</h1><p class="slide-subtitle">以課程教材呈現的主題順序，認識地球從形成到生命與環境共同演化的過程</p><div class="grid-2"><div class="card highlight"><span class="badge">起點</span><h3>星球形成與地球分異</h3><p>從星際雲與原始太陽系星雲的形成，進一步認識微行星聚集、地球形成，以及內部物質分層。</p></div><div class="card gold-border"><span class="badge">流體圈</span><h3>大氣與海洋的形成</h3><p>地球內部釋放揮發性物質，地表逐漸冷卻，水蒸氣凝結，形成早期大氣與海洋。</p></div><div class="card emerald-border"><span class="badge">生命與環境</span><h3>早期生命及氧氣演化</h3><p>早期缺氧環境、光合作用、疊層石與層狀鐵礦，呈現生命活動與地球環境的交互影響。</p></div><div class="card purple-border"><span class="badge">固體地球</span><h3>板塊運動與台灣地質</h3><p>由大陸漂移、海底擴張與板塊構造，延伸至台灣的地體構造與地殼變動。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 2 講第 5、8–11 頁；第 3 講第 8、11–18、25 頁；第 4 講第 3–17 頁；第 5 講第 5–30 頁<span class="source-caveat">｜本頁為課程主題整理，不以未經教材確認的年代建立完整地質年代表。</span></aside></div>
+<!-- Slide 3: 星雲起源與微行星吸積 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-03" data-source-ref="地球誕生與演化_日系風格(1).html#slide-03" data-title="地球的誕生：星雲與微行星吸積" id="earth-slide-03" tabindex="-1"><span class="badge">星際起點</span><h1 class="slide-title">地球的誕生：星雲與微行星吸積</h1><p class="slide-subtitle">從星際雲與原始太陽系星雲，理解固體物質如何逐步聚集成行星</p><div class="grid-2"><div class="card highlight"><span class="badge">形成背景</span><h3>星際雲與原始太陽系星雲</h3><p>教材以星際雲及原始太陽系星雲作為行星形成的起點，說明太陽系物質來源與形成環境。</p></div><div class="card gold-border"><span class="badge">物質聚集</span><h3>微行星形成與吸積</h3><p>星雲盤中的固體物質逐步聚集，形成微行星；微行星再經碰撞與吸積，逐漸形成較大的天體。</p></div><div class="card emerald-border"><span class="badge">地球形成</span><h3>由小天體成長為行星</h3><p>持續的物質聚集與碰撞，使原始地球逐漸成長，並為後續內部熔融與物質分異創造條件。</p></div><div class="card purple-border"><span class="badge">閱讀提醒</span><h3>定年證據與形成模型</h3><p>教材介紹地球年齡及隕石等相關內容。不同隕石坑案例不可直接當成地球年齡的定年證據。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 2 講第 5、8–11 頁；第 3 講第 8、11–16 頁<span class="source-caveat">｜移除教材文字未支持的凍結線溫度、增生速率與特定隕石坑定年數值。</span></aside></div>
+<!-- Slide 4: 忒伊亞撞擊與月球誕生 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-04" data-source-ref="地球誕生與演化_日系風格(1).html#slide-04" data-title="大碰撞假說：忒伊亞與月球形成" id="earth-slide-04" tabindex="-1"><span class="badge">行星級碰撞</span><h1 class="slide-title">大碰撞假說：忒伊亞與月球形成</h1><p class="slide-subtitle">教材以 Theia 大碰撞假說介紹月球形成的可能過程</p><div class="grid-2"><div class="card highlight"><span class="badge">假說內容</span><h3>原始地球受到大型天體撞擊</h3><p>大碰撞假說認為，原始地球曾與名為忒伊亞（Theia）的天體發生碰撞，撞擊事件與月球形成有關。</p></div><div class="card gold-border"><span class="badge">形成概念</span><h3>碰撞物質形成月球</h3><p>碰撞後的物質進入近地空間，並在後續過程中聚集，形成月球。此處以教材呈現的假說概念為主。</p></div></div><div class="callout"><div class="callout-icon">🔎</div><div><strong>解讀界線</strong>：本頁只整理教材所列的大碰撞假說，不延伸宣稱月球對地軸穩定、地球自轉時長或生命登陸具有已被本教材證實的因果關係。</div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 3 講第 39 頁<span class="source-caveat">｜移除未能由教材頁面確認的碰撞細節、月岩同位素數據及潮汐效應數值。</span></aside></div>
+<!-- Slide 5: 岩漿海與地球內部元素分異 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-05" data-source-ref="地球誕生與演化_日系風格(1).html#slide-05" data-title="岩漿海與地球物質分異" id="earth-slide-05" tabindex="-1"><span class="badge">地球內部演化</span><h1 class="slide-title">岩漿海與地球物質分異</h1><p class="slide-subtitle">地球早期受熱與熔融，密度及成分不同的物質逐漸分層</p><div class="grid-3"><div class="card gold-border"><span class="badge">熱源</span><h3>早期地球受熱</h3><p>教材介紹撞擊與放射性衰變等因素，說明早期地球內部升溫及熔融的背景。</p></div><div class="card highlight"><span class="badge">分異</span><h3>重力作用下的物質分層</h3><p>密度較大的金屬物質向內部集中，矽酸鹽物質則構成地函與地殼的主要部分。</p></div><div class="card emerald-border"><span class="badge">結果</span><h3>地球主要圈層</h3><p>地球內部形成地核、地函與地殼等主要構造層次，建立後續固體地球演化的基礎。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 2 講第 11 頁；第 3 講第 12、14–18 頁<span class="source-caveat">｜移除未由教材確認的特定放射性核種、分異耗時及圈層精確比例。</span></aside></div>
+<!-- Slide 6: 地震波與地球內部構造探測 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-06" data-source-ref="地球誕生與演化_日系風格(1).html#slide-06" data-title="地震波：認識地球內部構造" id="earth-slide-06" tabindex="-1"><span class="badge">地球物理探測</span><h1 class="slide-title">地震波：認識地球內部構造</h1><p class="slide-subtitle">利用地震波在不同介質中的傳播差異，推論地球內部的物理性質</p><div class="grid-2"><div class="card highlight"><span class="badge">P 波</span><h3>壓縮波／縱波</h3><p>P 波屬於體波，質點振動方向與波的傳播方向平行。教材以地震波特性說明其探測地球內部的用途。</p></div><div class="card gold-border"><span class="badge">S 波</span><h3>剪切波／橫波</h3><p>S 波屬於體波，質點振動方向與波的傳播方向垂直。其傳播特性可協助判斷介質的物理狀態。</p></div><div class="card emerald-border"><span class="badge">地球內部</span><h3>地震波資料的解讀</h3><p>地震波在地球內部傳播時會出現速度變化、折射或無法通過特定介質等現象，可用來推論內部構造。</p></div><div class="card purple-border"><span class="badge">延伸方法</span><h3>地震波斷層掃描</h3><p>教材亦介紹全球地震波斷層掃描，透過波速資料反演地球內部的三維構造。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 3 講第 19–22 頁<span class="source-caveat">｜因未完成所有原始圖表的視覺複核，移除陰影帶角度、深度、波相代號及波速數值。</span></aside></div>
+<!-- Slide 7: 次生大氣火山去氣與海洋誕生 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-07" data-source-ref="地球誕生與演化_日系風格(1).html#slide-07" data-title="次生大氣與原始海洋的形成" id="earth-slide-07" tabindex="-1"><span class="badge">流體圈創生</span><h1 class="slide-title">次生大氣與原始海洋的形成</h1><p class="slide-subtitle">火山去氣與地表冷卻，是教材說明早期大氣與海洋形成的重要過程</p><div class="grid-2"><div class="flow-steps"><div class="step-item rose"><div class="step-num">01</div><div class="step-content"><h4>原始大氣的變化</h4><p>教材介紹早期地球原始大氣，以及太陽活動對原始氣體包層的影響。</p></div></div><div class="step-item gold"><div class="step-num">02</div><div class="step-content"><h4>火山去氣作用</h4><p>地球內部釋放揮發性物質，形成次生大氣的重要來源。</p></div></div><div class="step-item emerald"><div class="step-num">03</div><div class="step-content"><h4>水蒸氣凝結</h4><p>隨地表逐漸冷卻，水蒸氣凝結並降水，促成早期海洋形成。</p></div></div></div><div class="card highlight"><span class="badge">大氣演化</span><h3>氣體成分逐步改變</h3><p>教材討論火山去氣所釋放的氣體，以及早期大氣成分的演化。不同氣體的比例與變化需依教材圖表判讀。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 5 講第 5–9 頁<span class="source-caveat">｜移除教材文字未明載的海洋形成精確年代、碳吸收比例與海鹽形成的完整化學路徑。</span></aside></div>
+<!-- Slide 8: 早期還原環境與生命起源 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-08" data-source-ref="地球誕生與演化_日系風格(1).html#slide-08" data-title="早期缺氧環境與生命起源議題" id="earth-slide-08" tabindex="-1"><span class="badge">生物化學起點</span><h1 class="slide-title">早期缺氧環境與生命起源議題</h1><p class="slide-subtitle">教材從早期大氣環境與硫的光化學反應，介紹生命起源相關條件</p><div class="grid-2"><div class="card purple-border highlight"><span class="badge">早期環境</span><h3>缺乏游離氧的大氣</h3><p>教材指出早期地球大氣環境與現代不同，游離氧尚未大量累積，呈現早期缺氧環境的特徵。</p></div><div class="card emerald-border highlight"><span class="badge">硫的反應</span><h3>硫光化學作用</h3><p>教材介紹含硫氣體在光照下的化學反應，以及硫物種在早期地球環境中的角色。</p></div></div><div class="callout"><div class="callout-icon">🧪</div><div><strong>內容界線</strong>：本頁聚焦教材實際介紹的早期大氣與硫光化學，不將特定生化前驅物的保存機制或特定微化石年代當作教材已證實結論。</div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 5 講第 3、16–17 頁<span class="source-caveat">｜移除教材文字未支持的微化石年代、碳同位素數據及生命起源的確定性因果敘述。</span></aside></div>
+<!-- Slide 9: 疊層石與大氧化事件 (GOE) -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-09" data-source-ref="地球誕生與演化_日系風格(1).html#slide-09" data-title="光合作用、層狀鐵礦與大氧化事件" id="earth-slide-09" tabindex="-1"><span class="badge">生物地質大轉折</span><h1 class="slide-title">光合作用、層狀鐵礦與大氧化事件</h1><p class="slide-subtitle">生命活動改變地球表層環境，教材以疊層石、鐵礦與氧氣演化呈現這段歷程</p><div class="grid-3"><div class="card emerald-border"><span class="badge">生命活動</span><h3>疊層石與光合作用</h3><p>教材介紹疊層石及光合作用，說明早期生物活動與氧氣產生之間的關係。</p></div><div class="card gold-border"><span class="badge">海洋記錄</span><h3>層狀鐵礦（BIF）</h3><p>層狀鐵礦記錄了早期海洋環境與鐵的沉澱作用，是理解早期氧化環境的重要地質材料。</p></div><div class="card rose-border"><span class="badge">大氣變化</span><h3>大氧化事件（GOE）</h3><p>教材討論氧氣逐步累積、陸地紅層及臭氧形成等現象，呈現地球環境的重大轉變。</p></div></div><div class="callout"><div class="callout-icon">📘</div><div><strong>年代閱讀提醒</strong>：教材不同頁面對鐵礦沉積、氧氣累積及紅層出現的時間描述不完全相同，應分別依原頁呈現，不合併成單一年代。</div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 5 講第 17–30 頁<span class="source-caveat">｜移除 BIF 鎖定總產氧量比例等未見教材依據的數據。</span></aside></div>
+<!-- Slide 10: 板塊構造學說革命 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-10" data-source-ref="地球誕生與演化_日系風格(1).html#slide-10" data-title="板塊構造學說的建立" id="earth-slide-10" tabindex="-1"><span class="badge">固體動力引擎</span><h1 class="slide-title">板塊構造學說的建立</h1><p class="slide-subtitle">由大陸漂移、海底擴張到板塊構造，理解固體地球的動態變化</p><div class="grid-2"><div class="card highlight"><span class="badge">大陸漂移</span><h3>大陸曾經連結的想法</h3><p>教材介紹大陸漂移概念，以及大陸形狀、化石與古冰川等支持線索。</p></div><div class="card gold-border"><span class="badge">海底擴張</span><h3>海洋地殼的形成與移動</h3><p>教材介紹海底擴張與古地磁條帶，說明海洋地殼在洋中脊形成並向兩側移動的證據。</p></div><div class="card rose-border"><span class="badge">板塊構造</span><h3>岩石圈板塊運動</h3><p>板塊構造學說整合大陸漂移與海底擴張等證據，用以解釋地震、火山及造山等地質現象。</p></div><div class="card emerald-border"><span class="badge">地球動態</span><h3>板塊邊界與地質作用</h3><p>教材呈現板塊運動及其與地表地質活動的關係；本頁不對各驅動力強弱作教材未提供的排名。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 3 講第 27、29–31 頁；第 4 講第 3–13 頁<span class="source-caveat">｜移除未由教材文字確認的歷史年份、洋殼年齡及全球地震／火山百分比。</span></aside></div>
+<!-- Slide 11: 隱沒工廠與大陸地殼製造 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-11" data-source-ref="地球誕生與演化_日系風格(1).html#slide-11" data-title="隱沒作用與地球物質循環" id="earth-slide-11" tabindex="-1"><span class="badge">岩石學與板塊循環</span><h1 class="slide-title">隱沒作用與地球物質循環</h1><p class="slide-subtitle">教材以 Subduction Factory 說明隱沒帶中的物質變化及其與火山活動的關係</p><div class="grid-2"><div class="flow-steps"><div class="step-item"><div class="step-num">進料</div><div class="step-content"><h4>海洋板塊進入隱沒帶</h4><p>海洋岩石圈及其上覆沉積物向板塊邊界移動，進入隱沒系統。</p></div></div><div class="step-item gold"><div class="step-num">作用</div><div class="step-content"><h4>脫水與地函交互作用</h4><p>隱沒過程伴隨物質與流體變化，並影響上覆地函及岩漿形成。</p></div></div><div class="step-item emerald"><div class="step-num">產出</div><div class="step-content"><h4>火山與岩漿活動</h4><p>隱沒帶的物質變化與岩漿作用，構成島弧及相關火山活動的重要背景。</p></div></div></div><div class="card highlight"><span class="badge">循環概念</span><h3>地表與地球內部的物質交換</h3><p>隱沒作用將地表物質帶入地球內部；火山活動則使部分物質重新回到地表，形成物質循環。</p></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 3 講第 29–31 頁<span class="source-caveat">｜移除未能由教材文字或已複核圖表確認的深部深度、特定熔融機制細節及地函柱補給模型。</span></aside></div>
+<!-- Slide 12: 台灣大地構造與地質分區 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-12" data-source-ref="地球誕生與演化_日系風格(1).html#slide-12" data-title="台灣的板塊交會與地質分區" id="earth-slide-12" tabindex="-1"><span class="badge">台灣地體構造</span><h1 class="slide-title">台灣的板塊交會與地質分區</h1><p class="slide-subtitle">教材以台灣地體構造圖與分區內容，呈現台灣位於板塊交會環境的地質特徵</p><div class="grid-2"><div class="card rose-border highlight"><span class="badge">構造背景</span><h3>板塊交會與地殼變動</h3><p>教材介紹台灣周邊板塊交會、隱沒系統及弧陸碰撞等構造背景，說明台灣地質活動的區域特性。</p></div><div class="card highlight"><span class="badge">本島主要地質分區（東至西）</span><table class="slide-table"><tbody><tr><td><strong>海岸山脈</strong></td><td>教材列示之地質分區</td></tr><tr><td><strong>花東縱谷</strong></td><td>教材列示之地質分區</td></tr><tr><td><strong>中央山脈</strong></td><td>教材列示之地質分區</td></tr><tr><td><strong>雪山山脈</strong></td><td>教材列示之地質分區</td></tr><tr><td><strong>西部麓山帶</strong></td><td>教材列示之地質分區</td></tr><tr><td><strong>海岸平原</strong></td><td>教材列示之地質分區</td></tr></tbody></table></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 4 講第 14–17、35–41 頁<span class="source-caveat">｜保留教材明列的六個名稱；未複核原始構造圖前，不加入板塊速率、抬升率及各分區詳細岩性解釋。</span></aside></div>
+<!-- Slide 13: 金星、地球與火星命運分水嶺 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-13" data-source-ref="地球誕生與演化_日系風格(1).html#slide-13" data-title="金星、地球與火星的大氣環境" id="earth-slide-13" tabindex="-1"><span class="badge">跨行星比較</span><h1 class="slide-title">金星、地球與火星的大氣環境</h1><p class="slide-subtitle">教材透過行星特徵與大氣演化，對照不同星球的環境差異</p><div class="grid-3"><div class="card rose-border"><span class="badge">金星</span><h3>高溫且濃厚的大氣</h3><p>教材介紹金星高溫環境及以二氧化碳為主的大氣特徵，並討論溫室效應。</p></div><div class="card emerald-border highlight"><span class="badge">地球</span><h3>液態水與大氣演化</h3><p>教材介紹地球大氣與海洋的形成，以及生命活動對大氣環境的影響。</p></div><div class="card gold-border"><span class="badge">火星</span><h3>稀薄大氣與低溫環境</h3><p>教材介紹火星稀薄大氣、低溫環境及水的不同存在狀態。</p></div></div><div class="callout"><div class="callout-icon">🌍</div><div><strong>比較重點</strong>：三顆行星呈現不同的大氣與表面環境。這裡依教材作特徵比較，不把單一因素簡化成行星演化的唯一原因。</div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 2 講第 23–45 頁；第 5 講第 10–15 頁<span class="source-caveat">｜保留教材有明確呈現的行星比較主題；移除未完整獲教材支持的碳吸收比例、磁場消失因果鏈等敘述。</span></aside></div>
+<!-- Slide 14: 稀有地球假說 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-14" data-source-ref="地球誕生與演化_日系風格(1).html#slide-14" data-title="延伸閱讀：稀有地球假說" id="earth-slide-14" tabindex="-1"><span class="badge">延伸閱讀</span><h1 class="slide-title">延伸閱讀：稀有地球假說</h1><p class="slide-subtitle">課程介紹將《地球是孤獨的》列為參考書；教材未進一步展開其完整論證</p><div class="grid-2"><div class="card purple-border highlight"><span class="badge">教材明確提供</span><h3>參考書目</h3><p>課程介紹列出 Peter D. Ward 與 Donald Brownlee 的《地球是孤獨的》作為參考閱讀資料。</p></div><div class="card emerald-border"><span class="badge">本頁定位</span><h3>課外延伸，而非課堂結論</h3><p>原始課程教材未提供稀有地球假說的完整命題、論證或各項條件，因此本頁不代替作者提出結論，也不把相關延伸論述標示為教材內容。</p></div></div><div class="callout"><div class="callout-icon">📚</div><div><strong>若要擴充本頁</strong>：需另行提供該書內容或指定文獻，才能逐項整理其主張與證據。</div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 1 講第 2 頁<span class="source-caveat">｜將原本未由課程投影片支持的假說內容改為書目介紹。</span></aside></div>
+<!-- Slide 15: 總結：動態交織的有機生命體 -->
+<div aria-hidden="true" class="slide" data-slide-id="earth-15" data-source-ref="地球誕生與演化_日系風格(1).html#slide-15" data-title="地球系統：多個圈層共同演化" id="earth-slide-15" tabindex="-1"><span class="badge">總結與終章</span><h1 class="slide-title">地球系統：多個圈層共同演化</h1><p class="slide-subtitle">整合固體地球、大氣、海洋與生命的課程主題，回顧地球環境的演變</p><div class="grid-4"><div class="card"><span class="badge">岩石圈</span><h3>固體地球</h3><p>地球內部構造、板塊運動與地體構造，持續影響地表地質環境。</p></div><div class="card gold-border"><span class="badge">地核與地函</span><h3>內部構造</h3><p>地球內部物質分異與地震波探測，協助理解地球深部構造。</p></div><div class="card emerald-border"><span class="badge">水圈與大氣</span><h3>流體環境</h3><p>火山去氣、海洋形成及大氣演化，構成地球表層環境的重要部分。</p></div><div class="card purple-border"><span class="badge">生物圈</span><h3>生命與環境</h3><p>光合作用與氧氣演化，呈現生命活動對地球表層環境的影響。</p></div></div><div class="callout" style="margin-top:20px;"><div class="callout-icon">✨</div><div><em>本頁為依據課程各講內容所作的綜合整理，並非單一教材頁面的原文結論。</em></div></div><aside aria-label="教材來源" class="source-note"><strong>教材來源：</strong>第 3 講第 12–22、27–31 頁；第 4 講第 3–17 頁；第 5 講第 5–30 頁<span class="source-caveat">｜明確標示為跨講次綜合整理，避免將編輯性結論誤認為教材原句。</span></aside></div>
+</div>
+<!-- Bottom Controls -->
+<div class="controls">
+<button aria-label="上一頁" class="btn" id="prevBtn" title="上一頁 (←)" type="button">‹</button>
+<div class="slide-counter" id="slideCounter">1 / 15</div>
+<button aria-label="下一頁" class="btn" id="nextBtn" title="下一頁 (→ / Space)" type="button">›</button>
+<div style="width: 1px; height: 18px; background: rgba(255,255,255,0.2);"></div>
+<button aria-expanded="false" aria-label="開啟投影片總覽" class="btn-text" id="overviewBtn" title="導覽總覽 (O / Esc)" type="button">導覽</button>
+<button aria-label="切換全螢幕" class="btn-text" id="fullscreenBtn" title="全螢幕切換 (F)" type="button">全螢幕</button>
+</div>
+<!-- Overview Modal Grid -->
+<div aria-hidden="true" aria-label="投影片總覽" aria-modal="true" class="overview-grid" id="overviewGrid" role="dialog">
+<button aria-label="關閉投影片總覽" class="close-overview" id="closeOverviewBtn" type="button">✕</button>
+<!-- Thumbnails dynamically injected by JS -->
+</div>
+<script id="presentation-manifest" type="application/json">{
+  "presentation_id": "earth-evolution-2026-11",
+  "version": "3.0.0",
+  "source_file": "earth-secrets-wiki/raw/slides/",
+  "source_policy": "Only the five user-provided lecture slide decks were used; unsupported claims were removed or reframed. No external research or factual additions.",
+  "slides": [
+    {
+      "slide_id": "earth-01",
+      "title": "封面",
+      "source_ref": "第 1 講第 1 頁；第 2–5 講課程教材"
+    },
+    {
+      "slide_id": "earth-02",
+      "title": "地球演化的主要階段",
+      "source_ref": "第 2 講第 5、8–11 頁；第 3 講第 8、11–18、25 頁；第 4 講第 3–17 頁；第 5 講第 5–30 頁"
+    },
+    {
+      "slide_id": "earth-03",
+      "title": "地球的誕生：星雲與微行星吸積",
+      "source_ref": "第 2 講第 5、8–11 頁；第 3 講第 8、11–16 頁"
+    },
+    {
+      "slide_id": "earth-04",
+      "title": "大碰撞假說：忒伊亞與月球形成",
+      "source_ref": "第 3 講第 39 頁"
+    },
+    {
+      "slide_id": "earth-05",
+      "title": "岩漿海與地球物質分異",
+      "source_ref": "第 2 講第 11 頁；第 3 講第 12、14–18 頁"
+    },
+    {
+      "slide_id": "earth-06",
+      "title": "地震波：認識地球內部構造",
+      "source_ref": "第 3 講第 19–22 頁"
+    },
+    {
+      "slide_id": "earth-07",
+      "title": "次生大氣與原始海洋的形成",
+      "source_ref": "第 5 講第 5–9 頁"
+    },
+    {
+      "slide_id": "earth-08",
+      "title": "早期缺氧環境與生命起源議題",
+      "source_ref": "第 5 講第 3、16–17 頁"
+    },
+    {
+      "slide_id": "earth-09",
+      "title": "光合作用、層狀鐵礦與大氧化事件",
+      "source_ref": "第 5 講第 17–30 頁"
+    },
+    {
+      "slide_id": "earth-10",
+      "title": "板塊構造學說的建立",
+      "source_ref": "第 3 講第 27、29–31 頁；第 4 講第 3–13 頁"
+    },
+    {
+      "slide_id": "earth-11",
+      "title": "隱沒作用與地球物質循環",
+      "source_ref": "第 3 講第 29–31 頁"
+    },
+    {
+      "slide_id": "earth-12",
+      "title": "台灣的板塊交會與地質分區",
+      "source_ref": "第 4 講第 14–17、35–41 頁"
+    },
+    {
+      "slide_id": "earth-13",
+      "title": "金星、地球與火星的大氣環境",
+      "source_ref": "第 2 講第 23–45 頁；第 5 講第 10–15 頁"
+    },
+    {
+      "slide_id": "earth-14",
+      "title": "延伸閱讀：稀有地球假說",
+      "source_ref": "第 1 講第 2 頁"
+    },
+    {
+      "slide_id": "earth-15",
+      "title": "地球系統：多個圈層共同演化",
+      "source_ref": "第 3 講第 12–22、27–31 頁；第 4 講第 3–17 頁；第 5 講第 5–30 頁"
+    }
+  ],
+  "qa": {
+    "content": "PASS_AFTER_SCOPE_REDUCTION",
+    "provenance": "PASS_15_SLIDES_HAVE_LECTURE_PAGE_REFERENCES",
+    "visual": "PASS_DESKTOP_MOBILE_LAYOUT; original source figure interpretation intentionally not expanded",
+    "functional": "PASS_BROWSER_TESTED",
+    "offline": "PASS",
+    "export": "PASS_STATIC_VALIDATION"
+  },
+  "title": "地球的誕生與演化｜教材來源校正版",
+  "source_audit": "completed_with_scope_limitations",
+  "source_basis": "earth-secrets-wiki/raw/slides/ 5 lecture decks, 212 pages",
+  "slide_count": 15,
+  "claim_level": "lecture-material-supported; no external research",
+  "deliverable": "地球誕生與演化_教材來源校正版.html"
+}</script>
+<script>
+(() => {
+  'use strict';
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const progressBar = document.getElementById('progressBar');
+  const progressContainer = document.querySelector('.progress-bar-container');
+  const slideCounter = document.getElementById('slideCounter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const overviewBtn = document.getElementById('overviewBtn');
+  const closeOverviewBtn = document.getElementById('closeOverviewBtn');
+  const overviewGrid = document.getElementById('overviewGrid');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  let currentIndex = 0;
+  const totalSlides = slides.length;
+  let lastFocusedElement = null;
+  let touchStartX = null;
+
+  function updateSlide(index) {
+    currentIndex = Math.max(0, Math.min(totalSlides - 1, index));
+    slides.forEach((slide, i) => {
+      const active = i === currentIndex;
+      slide.classList.toggle('active', active);
+      slide.setAttribute('aria-hidden', String(!active));
+    });
+    const progress = ((currentIndex + 1) / totalSlides) * 100;
+    progressBar.style.width = `${progress}%`;
+    progressContainer.setAttribute('aria-valuemax', String(totalSlides));
+    progressContainer.setAttribute('aria-valuenow', String(currentIndex + 1));
+    slideCounter.textContent = `${currentIndex + 1} / ${totalSlides}`;
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === totalSlides - 1;
+    overviewGrid.querySelectorAll('.thumb').forEach((thumb, i) => {
+      thumb.classList.toggle('active-thumb', i === currentIndex);
+      thumb.setAttribute('aria-current', i === currentIndex ? 'page' : 'false');
+    });
+    slides[currentIndex].scrollTop = 0;
+  }
+
+  const prevSlide = () => updateSlide(currentIndex - 1);
+  const nextSlide = () => updateSlide(currentIndex + 1);
+
+  function buildOverview() {
+    slides.forEach((slide, idx) => {
+      const thumb = document.createElement('button');
+      thumb.type = 'button';
+      thumb.className = `thumb ${idx === currentIndex ? 'active-thumb' : ''}`;
+      thumb.setAttribute('aria-current', idx === currentIndex ? 'page' : 'false');
+
+      const number = document.createElement('div');
+      number.className = 'thumb-num';
+      number.textContent = `SLIDE ${idx + 1}`;
+
+      const title = document.createElement('div');
+      title.className = 'thumb-title';
+      title.textContent = slide.getAttribute('data-title') || `投影片 ${idx + 1}`;
+
+      const heading = slide.querySelector('h1');
+      const subtitle = slide.querySelector('p.slide-subtitle');
+      const desc = document.createElement('div');
+      desc.className = 'thumb-desc';
+      desc.textContent = subtitle?.innerText || heading?.innerText || '';
+
+      thumb.append(number, title, desc);
+      thumb.addEventListener('click', () => {
+        updateSlide(idx);
+        toggleOverview(false);
+      });
+      overviewGrid.appendChild(thumb);
+    });
+  }
+
+  function toggleOverview(force) {
+    const open = typeof force === 'boolean' ? force : !overviewGrid.classList.contains('active');
+    if (open) {
+      lastFocusedElement = document.activeElement;
+      overviewGrid.classList.add('active');
+      overviewGrid.setAttribute('aria-hidden', 'false');
+      overviewBtn.setAttribute('aria-expanded', 'true');
+      closeOverviewBtn.focus();
+    } else {
+      overviewGrid.classList.remove('active');
+      overviewGrid.setAttribute('aria-hidden', 'true');
+      overviewBtn.setAttribute('aria-expanded', 'false');
+      (lastFocusedElement || overviewBtn).focus();
+    }
+  }
+
+  async function toggleFullscreen() {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      }
+    } catch (error) {
+      fullscreenBtn.title = '目前瀏覽器不允許切換全螢幕';
+    }
+  }
+
+  document.addEventListener('fullscreenchange', () => {
+    fullscreenBtn.textContent = document.fullscreenElement ? '退出全螢幕' : '全螢幕';
+  });
+  prevBtn.addEventListener('click', prevSlide);
+  nextBtn.addEventListener('click', nextSlide);
+  overviewBtn.addEventListener('click', () => toggleOverview());
+  closeOverviewBtn.addEventListener('click', () => toggleOverview(false));
+
+  document.addEventListener('keydown', (event) => {
+    const target = event.target;
+    const typing = target && (target.isContentEditable ||
+      ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+    if (typing) return;
+
+    if (overviewGrid.classList.contains('active')) {
+      if (event.key === 'Escape' || event.key.toLowerCase() === 'o') {
+        event.preventDefault();
+        toggleOverview(false);
+      } else if (event.key === 'Tab') {
+        const focusables = Array.from(overviewGrid.querySelectorAll('button'));
+        if (!focusables.length) return;
+        const first = focusables[0], last = focusables[focusables.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first.focus();
+        }
+      }
+      return;
+    }
+
+    if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) {
+      event.preventDefault(); nextSlide();
+    } else if (['ArrowLeft', 'PageUp'].includes(event.key)) {
+      event.preventDefault(); prevSlide();
+    } else if (event.key === 'Home') {
+      event.preventDefault(); updateSlide(0);
+    } else if (event.key === 'End') {
+      event.preventDefault(); updateSlide(totalSlides - 1);
+    } else if (event.key.toLowerCase() === 'o') {
+      event.preventDefault(); toggleOverview(true);
+    } else if (event.key.toLowerCase() === 'f') {
+      event.preventDefault(); toggleFullscreen();
+    }
+  });
+
+  document.querySelector('.deck').addEventListener('touchstart', (event) => {
+    if (event.touches.length === 1) touchStartX = event.touches[0].clientX;
+  }, {passive:true});
+  document.querySelector('.deck').addEventListener('touchend', (event) => {
+    if (touchStartX === null || !event.changedTouches.length) return;
+    const delta = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) > 65) delta < 0 ? nextSlide() : prevSlide();
+    touchStartX = null;
+  }, {passive:true});
+
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+  buildOverview();
+  updateSlide(0);
+})();
+</script>
+</body>
+</html>

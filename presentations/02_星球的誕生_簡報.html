@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 2 講 星球的誕生 (Birth of the Planets) — 簡報室</title>
+  <style>
+    :root {
+      --bg-space: #070b19;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-border: rgba(56, 189, 248, 0.2);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-gold: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      user-select: none;
+      background-image: 
+        radial-gradient(1px 1px at 25px 35px, #ffffff 100%, transparent),
+        radial-gradient(1.5px 1.5px at 120px 80px, rgba(255,255,255,0.7) 100%, transparent),
+        radial-gradient(1px 1px at 220px 190px, rgba(56,189,248,0.8) 100%, transparent),
+        radial-gradient(2px 2px at 350px 280px, rgba(245,158,11,0.6) 100%, transparent),
+        radial-gradient(1px 1px at 480px 120px, #ffffff 100%, transparent),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 45%);
+      background-size: 550px 550px, 450px 450px, 600px 600px, 700px 700px, 500px 500px, 100% 100%, 100% 100%;
+    }
+
+    /* Top Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold));
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+    }
+
+    /* Presentation Container */
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90vw;
+      max-width: 1350px;
+      height: 82vh;
+      max-height: 800px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 20px;
+      padding: 48px 56px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.1);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(24px) scale(0.98);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-cyan) transparent;
+    }
+
+    .slide::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide::-webkit-scrollbar-thumb {
+      background: var(--accent-cyan);
+      border-radius: 3px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      z-index: 10;
+    }
+
+    /* Typography & Components */
+    .badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .badge.gold {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    .badge.emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .badge.purple {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-purple);
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    h1.slide-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      flex: 1;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      flex: 1;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+    .card.highlight {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(30, 41, 59, 0.75);
+    }
+    .card.gold-border {
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .card.rose-border {
+      border-color: rgba(244, 63, 94, 0.4);
+    }
+    .card.emerald-border {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li {
+      font-size: 0.94rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .card ul {
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    /* Step Timeline Flow */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      background: rgba(30, 41, 59, 0.5);
+      padding: 16px 20px;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-cyan);
+    }
+    .step-item.gold { border-left-color: var(--accent-gold); }
+    .step-item.emerald { border-left-color: var(--accent-emerald); }
+    .step-item.purple { border-left-color: var(--accent-purple); }
+
+    .step-num {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      min-width: 32px;
+    }
+    .step-item.gold .step-num { color: var(--accent-gold); }
+    .step-item.emerald .step-num { color: var(--accent-emerald); }
+    .step-item.purple .step-num { color: var(--accent-purple); }
+
+    .step-content h4 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+    .step-content p {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Comparison Table */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex: 1;
+    }
+    table.slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    table.slide-table th {
+      background: rgba(30, 41, 59, 0.9);
+      padding: 12px 14px;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+      white-space: nowrap;
+    }
+    table.slide-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+    table.slide-table tr:hover td {
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    /* Callout Box */
+    .callout {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 14px;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .callout-icon {
+      font-size: 1.4rem;
+    }
+
+    /* Bottom Control Bar */
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 8px 22px;
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .btn {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+      font-size: 1.1rem;
+    }
+    .btn:hover {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-cyan);
+    }
+    .btn:active {
+      transform: scale(0.92);
+    }
+    .slide-counter {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      min-width: 60px;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+    .btn-text {
+      border-radius: 6px;
+      width: auto;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .btn-text:hover {
+      color: #fff;
+    }
+
+    /* Overview Grid Modal */
+    .overview-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(7, 11, 25, 0.92);
+      backdrop-filter: blur(20px);
+      z-index: 2000;
+      padding: 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .overview-grid.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .thumb {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 18px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      height: 170px;
+    }
+    .thumb:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.25);
+    }
+    .thumb.active-thumb {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+    .thumb-num {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+    .thumb-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .thumb-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    .close-overview {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 1.5rem;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 2001;
+    }
+
+    /* Title Slide Special */
+    .title-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(56, 189, 248, 0.12) 0%, rgba(15, 23, 42, 0.7) 70%);
+    }
+    .title-slide h1 {
+      font-size: 3.4rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .title-slide h2 {
+      font-size: 1.6rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+    .title-meta {
+      font-size: 1rem;
+      color: #94a3b8;
+      max-width: 700px;
+      line-height: 1.8;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+    }
+
+    /* Animations */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); }
+      50% { box-shadow: 0 0 35px rgba(56, 189, 248, 0.4); }
+    }
+    .deck { animation: pulse-glow 6s infinite ease-in-out; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Deck Container -->
+  <div class="deck">
+
+    <!-- Slide 1: 封面 -->
+    <div class="slide title-slide active" data-title="封面">
+      <span class="badge gold">國立臺灣大學地質科學系 磨課師線上課程</span>
+      <h1 class="slide-title">第 2 講：星球的誕生</h1>
+      <h2>Birth of the Planets</h2>
+      <div class="title-meta">
+        <p><strong>授課教師</strong>：宋聖榮 教授</p>
+        <p><strong>整理維護</strong>：地球的奧秘 LLM Wiki 知識庫</p>
+        <p style="margin-top: 10px; font-size: 0.85rem; color: #64748b;">
+          快捷操作：鍵盤 <code>←</code> / <code>→</code> 切換頁面 ｜ <code>Space</code> 下一頁 ｜ <code>O</code> 導覽網格 ｜ <code>F</code> 全螢幕
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 2: 導覽大綱 -->
+    <div class="slide" data-title="核心架構">
+      <span class="badge">課程導覽</span>
+      <h1 class="slide-title">核心探討四大維度</h1>
+      <p class="slide-subtitle">從 55 億年前的星際塵埃，到現代八大行星秩序的奠定歷程</p>
+      <div class="grid-4">
+        <div class="card">
+          <span class="badge" style="margin-bottom:8px;">模組 01</span>
+          <h3>🌌 星雲起源與太陽</h3>
+          <p>星雲假說 (Nebular Hypothesis)、原恆星核融合、太陽圈層構造與演化終局。</p>
+        </div>
+        <div class="card gold-border">
+          <span class="badge gold" style="margin-bottom:8px;">模組 02</span>
+          <h3>🔥 兩大分異機制</h3>
+          <p>微行星吸積 (Accretion)、太陽元素分異熱梯度、地球內部核函殼重力分異。</p>
+        </div>
+        <div class="card emerald-border">
+          <span class="badge emerald" style="margin-bottom:8px;">模組 03</span>
+          <h3>🪐 行星家族體系</h3>
+          <p>類地行星（金屬岩石質）vs. 類木行星（氣體與冰質巨行星）環境對照。</p>
+        </div>
+        <div class="card purple">
+          <span class="badge purple" style="margin-bottom:8px;">模組 04</span>
+          <h3>⚖️ 現代天文定義</h3>
+          <p>2006 年 IAU 行星三大定義要件、冥王星降級與小行星帶的引力真相。</p>
+        </div>
+      </div>
+      <div class="callout">
+        <div class="callout-icon">💡</div>
+        <div><strong>核心哲學</strong>：太陽系的結構並非隨機拼湊，而是熱力學溫度梯度與重力吸積必然造就的宏偉物理圖景。</div>
+      </div>
+    </div>
+
+    <!-- Slide 3: 星雲假說 -->
+    <div class="slide" data-title="星雲假說">
+      <span class="badge">天文物理起源</span>
+      <h1 class="slide-title">星雲假說 (Nebular Hypothesis)</h1>
+      <p class="slide-subtitle">太陽與八大行星源於同一團低溫、旋轉的星際氣體微塵雲，於 55~46 億年前一體誕生</p>
+      <div class="grid-2">
+        <div class="flow-steps">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h4>星際雲收縮與凝聚 (55 億年前)</h4>
+              <p>由 92% 氫、7.8% 氦及矽酸鹽微塵組成的星際雲，在超新星震波與自重力作用下向中心密度集中處坍縮。</p>
+            </div>
+          </div>
+          <div class="step-item gold">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h4>原行星吸積盤形成 (角動量守恆)</h4>
+              <p>中心收縮自轉加速，離心力將星雲拉平為旋轉圓盤；中心形成原恆星 (Protostar)，赤道面微塵富集成微行星。</p>
+            </div>
+          </div>
+          <div class="step-item emerald">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <h4>微行星碰撞與恆星點火 (46 億年前)</h4>
+              <p>微行星藉引力碰撞合併長成原行星；太陽核心溫度破千萬度點燃核融合，爆發強勁星風吹散殘留游離氣體。</p>
+            </div>
+          </div>
+        </div>
+        <div class="card highlight">
+          <h3>🔭 現代三大觀測鐵證</h3>
+          <ul>
+            <li><strong>同向性與共面性</strong>：八大行星繞日公轉方向一致（逆時針），且軌道幾近共面於黃道面。</li>
+            <li><strong>深空原行星盤觀測</strong>：哈伯望遠鏡與 ALMA 陣列在獵戶座大星雲直擊大量原恆星吸積盤。</li>
+            <li><strong>同位素絕對年齡</strong>：碳質球粒隕石中難熔包體 (CAI) 定年精確指針為 <strong>45.67 億年前 (4.567 Ga)</strong>。</li>
+          </ul>
+          <div class="callout" style="margin-top:auto;">
+            <div class="callout-icon">⭐</div>
+            <div><strong>全系統質量比</strong>：太陽單獨囊括了太陽系 <strong>99.8%</strong> 的總質量，木星則包攬了剩餘 0.2% 的大部分。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: 太陽的結構與能量 -->
+    <div class="slide" data-title="中心天體：太陽">
+      <span class="badge gold">太陽系中心天體</span>
+      <h1 class="slide-title">太陽 (The Sun)：結構、核能與宿命</h1>
+      <p class="slide-subtitle">光譜型 G2V 黃矮星，主宰全系統光、熱與日光層 (Heliosphere)</p>
+      <div class="grid-3">
+        <div class="card">
+          <span class="badge gold">內部圈層構造</span>
+          <h3>⚡ 能量產出與傳遞</h3>
+          <ul>
+            <li><strong>內核 (Core)</strong>：溫度 1,500 萬 K、2,500 億大氣壓。每秒 7 億噸氫融合成 6.95 億噸氦，虧損 500 萬噸質量轉化為龐大能量 ($3.86 \times 10^{23}\text{ kW}$)。</li>
+            <li><strong>輻射層 (Radiative Zone)</strong>：高能光子反覆吸收與再發射，需耗時數十萬年方能抵達外層。</li>
+            <li><strong>對流層 (Convective Zone)</strong>：最外 20% 厚度，熱對流將熱量翻騰至表面。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge">表面大氣圈層</span>
+          <h3>☀️ 大氣與動態現象</h3>
+          <ul>
+            <li><strong>光球層 (Photosphere)</strong>：表面可見層，溫度 ~6,000 K；太陽黑子為低溫區 (~4,000 K，強磁場拘束所致)。</li>
+            <li><strong>色球與日冕 (Corona)</strong>：日冕延伸百萬公里，溫度逆勢飆破 1,000,000 K。</li>
+            <li><strong>太陽風 (Solar Wind)</strong>：每秒 450 km 超音速帶電粒子流，激發地球極光與塑造彗星背向彗尾。</li>
+          </ul>
+        </div>
+        <div class="card purple">
+          <span class="badge purple">恆星演化史</span>
+          <h3>⏳ 100 億年生命週期</h3>
+          <ul>
+            <li><strong>現今階段</strong>：已度過 50 億年，處於穩定期主序星中年，約耗盡 50% 核心氫氣。</li>
+            <li><strong>+50 億年後</strong>：氫耗盡觸發氦融合，急劇膨脹為<strong>紅巨星 (Red Giant)</strong>，吞噬水星、金星並逼近地球。</li>
+            <li><strong>演化終局</strong>：外殼拋射形成行星狀星雲，殘核收縮為<strong>白矮星 (White Dwarf)</strong>，最終冷卻為黑矮星。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: 微行星吸積機制 -->
+    <div class="slide" data-title="微行星吸積">
+      <span class="badge emerald">行星形成力學</span>
+      <h1 class="slide-title">微行星吸積 (Planetesimal Accretion)</h1>
+      <p class="slide-subtitle">從微米級塵埃到數千公里原行星的「滾雪球式」重力生長</p>
+      <div class="grid-2">
+        <div class="flow-steps">
+          <div class="step-item">
+            <div class="step-num">A</div>
+            <div class="step-content">
+              <h4>塵埃沉降與微行星凝聚 (1 ~ 10 km)</h4>
+              <p>在氣體阻尼下，矽酸鹽與金屬微塵落至星雲盤赤道面，由凡得瓦力與局部重力不穩定黏合，聚集成千米級微行星。</p>
+            </div>
+          </div>
+          <div class="step-item gold">
+            <div class="step-num">B</div>
+            <div class="step-content">
+              <h4>暴走增生 (Runaway Growth / 寡頭生長)</h4>
+              <p>微行星愈大，其引力截面積愈大，捕獲周遭碎塊的速度呈指數級飆升，少數優勢者迅速長大為千公里級<strong>原行星 (Proto-planets)</strong>。</p>
+            </div>
+          </div>
+          <div class="step-item emerald">
+            <div class="step-num">C</div>
+            <div class="step-content">
+              <h4>大碰撞時期 (Giant Impacts)</h4>
+              <p>數十顆火星大小的原行星軌道交叉干擾，爆發行星級大碰撞，清空軌道並奠定最終成熟行星。</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🪨 太陽系吸積殘留證據</h3>
+          <p>今日太陽系保留了許多吸積未完成或遭撞擊破碎的活化石：</p>
+          <ul>
+            <li><strong>火星衛星</strong>：火衛一 (Phobos) 與火衛二 (Deimos) 形狀如馬鈴薯般不規則，為早期捕獲之微行星殘塊。</li>
+            <li><strong>近地小行星</strong>：如愛神星 (433 Eros)，展現無重力圓球化之微行星原始碰撞面貌。</li>
+            <li><strong>地月大碰撞</strong>：原行星「忒伊亞 (Theia)」斜撞地球，拋射矽酸鹽碎屑於近地軌道吸積成月球。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: 太陽元素分異作用 -->
+    <div class="slide" data-title="太陽元素分異">
+      <span class="badge">關鍵決定機制</span>
+      <h1 class="slide-title">太陽元素分異作用 (Solar Elemental Differentiation)</h1>
+      <p class="slide-subtitle">太陽輻射徑向熱梯度與凍結線 (Frost Line)，決定內外行星的本質分野</p>
+      <div class="grid-2">
+        <div class="card rose-border highlight">
+          <span class="badge" style="color:var(--accent-rose); border-color:var(--accent-rose); background:rgba(244,63,94,0.1);">內圈軌道 (&lt; 3 ~ 4 AU)</span>
+          <h3>🔥 高溫環境 (~1,200℃ / 1,500 K)</h3>
+          <ul>
+            <li><strong>冷凝成分</strong>：僅有熔點極高的金屬（鐵、鎳）與高溫含鐵矽酸鹽礦物（橄欖石、輝石前驅物）能凝結為固態。</li>
+            <li><strong>揮發物散失</strong>：水、氨、甲烷及氫氦氣體因高溫無法凝結，被太陽風吹向外圍。</li>
+            <li><strong>產物</strong>：保留微行星原始金屬岩石質，形成體積小、質量小、<strong>平均密度極高 (3.9~5.5 g/cm³)</strong> 的<strong>類地行星</strong>。</li>
+          </ul>
+        </div>
+        <div class="card emerald-border highlight">
+          <span class="badge emerald">外圈軌道 (&gt; 4 ~ 5 AU)</span>
+          <h3>❄️ 低溫越過「凍結線 (Frost Line)」</h3>
+          <ul>
+            <li><strong>冷凝成分</strong>：溫度驟降，水蒸氣、氨氣、甲烷大量凍結為冰晶（冰的豐度遠高於岩石金屬）。</li>
+            <li><strong>失控氣體吸積</strong>：固態冰質核心快速突破 10 個地球質量，強大重力失控吸積大星雲中的原始氫氦氣體。</li>
+            <li><strong>產物</strong>：形成體積龐大、質量巨大、<strong>平均密度極低 (0.69~1.64 g/cm³)</strong> 的<strong>類木行星</strong>。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:20px;">
+        <div class="callout-icon">⚖️</div>
+        <div><strong>對比：地球元素分異</strong>：太陽元素分異發生在「天體之間」；而天體內部在熔融後，重金屬沉降成核、輕質矽酸鹽浮升成函與殼，則是「單一天體內部」的元素分異。</div>
+      </div>
+    </div>
+
+    <!-- Slide 7: 類地行星 -->
+    <div class="slide" data-title="類地行星家族">
+      <span class="badge">內圈成員</span>
+      <h1 class="slide-title">類地行星 (Terrestrial Planets)</h1>
+      <p class="slide-subtitle">高密度、金屬核心、矽酸鹽地函與岩石外殼的四大岩質天體</p>
+      <div class="grid-4">
+        <div class="card">
+          <span class="badge">0.39 AU</span>
+          <h3>水星 (Mercury)</h3>
+          <p><strong>鐵質金屬球</strong></p>
+          <ul>
+            <li>直徑 4,879 km (八大中最小)</li>
+            <li>密度高達 5.43 g/cm³，鐵鎳核心佔半徑 2/3~3/4</li>
+            <li>無實質大氣，晝夜溫差高達 600℃ (-170~430℃)</li>
+          </ul>
+        </div>
+        <div class="card rose-border">
+          <span class="badge" style="color:var(--accent-rose); border-color:var(--accent-rose);">0.72 AU</span>
+          <h3>金星 (Venus)</h3>
+          <p><strong>失控溫室煉獄</strong></p>
+          <ul>
+            <li>直徑 12,104 km (地球姊妹星)</li>
+            <li>自轉緩慢逆行 (243 天轉一圈)</li>
+            <li>90 大氣壓、96% CO₂、硫酸雲，表面均溫達 470℃</li>
+            <li>煎餅狀火山 (Pancake Volcanoes)</li>
+          </ul>
+        </div>
+        <div class="card emerald-border">
+          <span class="badge emerald">1.00 AU</span>
+          <h3>地球 (Earth)</h3>
+          <p><strong>動態生機綠洲</strong></p>
+          <ul>
+            <li>直徑 12,746 km，密度 5.52 (全系最高)</li>
+            <li>覆蓋 71% 液態水圈</li>
+            <li>活躍板塊構造運動維繫碳循環</li>
+            <li>液態地核產生強磁場保護大氣</li>
+          </ul>
+        </div>
+        <div class="card gold-border">
+          <span class="badge gold">1.52 AU</span>
+          <h3>火星 (Mars)</h3>
+          <p><strong>乾燥紅色沙漠</strong></p>
+          <ul>
+            <li>直徑 6,780 km (體積地球 1/6)</li>
+            <li>自轉週期與傾角 (25.2°) 近同地球</li>
+            <li>稀薄 CO₂ 大氣 (0.006 atm)，均溫 -50℃</li>
+            <li>奧林帕斯山 (27 km 高)、水手峽谷 (4,000 km 長)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: 類木行星 -->
+    <div class="slide" data-title="類木行星家族">
+      <span class="badge emerald">外圈成員</span>
+      <h1 class="slide-title">類木行星 (Jovian Planets)</h1>
+      <p class="slide-subtitle">富含氫、氦與冰質揮發分，質量體積龐大、具壯麗光環與衛星系統</p>
+      <div class="grid-2">
+        <div class="card highlight">
+          <span class="badge gold">氣體巨行星 (Gas Giants)</span>
+          <h3>木星 (Jupiter) &amp; 土星 (Saturn)</h3>
+          <ul>
+            <li><strong>木星 (5.2 AU)</strong>：行星之王，質量為地球 317 倍。深部具導電「液態金屬氫層」，驅動表面比地球強 10 倍的超強磁場與極光；大紅斑風暴已肆虐數百年。</li>
+            <li><strong>土星 (9.5 AU)</strong>：密度僅 0.69 g/cm³（唯一可浮於水），高速自轉扁平率達 10%；宏偉土星環由無數水冰碎塊構成，由「牧羊衛星」引力共振維繫於洛希極限內；北極六角形風暴。</li>
+          </ul>
+        </div>
+        <div class="card highlight">
+          <span class="badge">冰巨行星 (Ice Giants)</span>
+          <h3>天王星 (Uranus) &amp; 海王星 (Neptune)</h3>
+          <ul>
+            <li><strong>天王星 (19.2 AU)</strong>：自轉軸傾斜 98°，「橫躺著」繞日公轉；高空甲烷強烈吸收紅光呈現淡藍綠色；中心為厚重水、氨、甲烷超臨界「冰質地函」；具 13 道細暗環。</li>
+            <li><strong>海王星 (30.0 AU)</strong>：最外圈八大行星，密度 (1.64) 為類木行星最高；南半球「大暗斑」伴隨秒速 300 公尺（時速上千公里）之超音速西風。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: 小行星帶與矮行星 -->
+    <div class="slide" data-title="小行星帶與矮行星">
+      <span class="badge purple">引力干擾與邊疆</span>
+      <h1 class="slide-title">小行星帶與矮行星 (Dwarf Planets)</h1>
+      <p class="slide-subtitle">木星引力共振阻礙吸積，保留 46 億年前太陽系創生初期的原始化石</p>
+      <div class="grid-2">
+        <div class="card">
+          <span class="badge">主小行星帶 (2.2 ~ 3.3 AU)</span>
+          <h3>🛑 木星的重力「破壞者」角色</h3>
+          <p>位於火星與木星之間廣袤空間中聚集了數百萬顆小行星：</p>
+          <ul>
+            <li><strong>柯克伍德空隙 (Kirkwood Gaps)</strong>：木星巨大重力對該區施加強烈周期性引力攝動，將微行星軌道拉扁。</li>
+            <li><strong>碰撞碎裂而非黏合</strong>：微行星相對碰撞速度過高，導致撞擊即粉碎，永遠喪失凝聚成完整行星的機會。</li>
+            <li><strong>穀神星 (Ceres)</strong>：小行星帶最大天體（直徑 950 km，佔小行星帶總質量 1/3），是主帶唯一達流體靜力平衡之矮行星。</li>
+          </ul>
+        </div>
+        <div class="card purple">
+          <span class="badge purple">柯伊伯帶與離散盤</span>
+          <h3>❄️ 冰質矮行星三巨頭</h3>
+          <ul>
+            <li><strong>冥王星 (Pluto / 134340)</strong>：柯伊伯帶天體（距日 39.5 AU），直徑 2,376 km。具氮冰心形平原與大型共振雙星衛星凱倫 (Charon)。</li>
+            <li><strong>鬩神星 (Eris / 136199)</strong>：2005 年由麥克·布朗發現於離散盤（距日 68 AU），質量比冥王星還高出 27%，直接引發 2006 年行星地位大論戰。</li>
+            <li><strong>矮行星本質</strong>：繞日且圓球化，但<strong>未能清空公轉軌道周邊雜物</strong>。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: 2006 IAU 行星新定義 -->
+    <div class="slide" data-title="2006 行星新定義">
+      <span class="badge">天文學里程碑</span>
+      <h1 class="slide-title">2006 IAU 行星新定義 (Resolution B5)</h1>
+      <p class="slide-subtitle">終結長達 76 年的冥王星地位爭議，確立太陽系天體三級架構</p>
+      <div class="grid-3">
+        <div class="card highlight">
+          <span class="badge">條件 01</span>
+          <h3>☀️ 繞恆星公轉</h3>
+          <p>天體必須獨立繞著恆星（太陽）公轉，且<strong>自身不是其他行星的衛星</strong>。</p>
+        </div>
+        <div class="card highlight">
+          <span class="badge gold">條件 02</span>
+          <h3>⚪ 流體靜力平衡</h3>
+          <p>質量必須足夠大，其自身引力克服剛體力，使星體維持<strong>近乎圓球形</strong>的外貌。</p>
+        </div>
+        <div class="card rose-border highlight">
+          <span class="badge" style="color:var(--accent-rose); border-color:var(--accent-rose);">條件 03 (關鍵殺手)</span>
+          <h3>🧹 清空軌道鄰近區域</h3>
+          <p>天體引力必須處於絕對支配地位，已<strong>完全清除或吸積其軌道周邊的其他小天體</strong>。</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:20px;">
+        <h3>📉 冥王星為何被降級？</h3>
+        <p>冥王星軌道穿過海王星軌道，且位於柯伊伯帶中，周遭充斥數以萬計大小相仿的冰質天體。冥王星質量僅佔其軌道物質總量的極小比例（地球則佔自身軌道 99.999% 以上）。因此冥王星未能滿足第三項要件，與穀神星、鬩神星一同劃歸<strong>「矮行星 (Dwarf Planet)」</strong>，八大行星秩序自此確立。</p>
+      </div>
+    </div>
+
+    <!-- Slide 11: 綜合比較矩陣 -->
+    <div class="slide" data-title="綜合比較矩陣">
+      <span class="badge">跨星體全景對照</span>
+      <h1 class="slide-title">八大行星與代表矮行星物理特性比較表</h1>
+      <p class="slide-subtitle">橫向全景對照：距離、直徑、密度、大氣與特殊景觀</p>
+      <div class="table-container">
+        <table class="slide-table">
+          <thead>
+            <tr>
+              <th>天體</th>
+              <th>群組</th>
+              <th>日距 (AU)</th>
+              <th>直徑 (km)</th>
+              <th>密度 (g/cm³)</th>
+              <th>大氣主成分</th>
+              <th>代表性極端地貌 / 特殊現象</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>水星 Mercury</strong></td>
+              <td>類地行星</td>
+              <td>0.39</td>
+              <td>4,879</td>
+              <td>5.43</td>
+              <td>稀薄外氣 (Na, He)</td>
+              <td>極大鐵核、晝夜溫差 600℃、密布撞擊坑</td>
+            </tr>
+            <tr>
+              <td><strong>金星 Venus</strong></td>
+              <td>類地行星</td>
+              <td>0.72</td>
+              <td>12,104</td>
+              <td>5.24</td>
+              <td>96% CO₂, 3% N₂</td>
+              <td>90 大氣壓、470℃ 溫室煉獄、硫酸雲、逆向慢自轉</td>
+            </tr>
+            <tr>
+              <td><strong>地球 Earth</strong></td>
+              <td>類地行星</td>
+              <td>1.00</td>
+              <td>12,746</td>
+              <td>5.52</td>
+              <td>78% N₂, 21% O₂</td>
+              <td>71% 液態水海洋、活躍板塊構造、強磁場、生機繁茂</td>
+            </tr>
+            <tr>
+              <td><strong>火星 Mars</strong></td>
+              <td>類地行星</td>
+              <td>1.52</td>
+              <td>6,780</td>
+              <td>3.93</td>
+              <td>95% CO₂, 3% N₂</td>
+              <td>奧林帕斯山 (27km)、水手峽谷 (4000km)、乾冰極冠</td>
+            </tr>
+            <tr>
+              <td><strong>穀神星 Ceres</strong></td>
+              <td>矮行星</td>
+              <td>2.77</td>
+              <td>950</td>
+              <td>2.16</td>
+              <td>極微量水氣</td>
+              <td>小行星帶唯一矮行星、岩石冰質球體</td>
+            </tr>
+            <tr>
+              <td><strong>木星 Jupiter</strong></td>
+              <td>類木 (氣體)</td>
+              <td>5.20</td>
+              <td>138,346</td>
+              <td>1.33</td>
+              <td>90% H₂, 10% He</td>
+              <td>全系最大、大紅斑高壓氣旋、金屬氫對流、強磁場極光</td>
+            </tr>
+            <tr>
+              <td><strong>土星 Saturn</strong></td>
+              <td>類木 (氣體)</td>
+              <td>9.54</td>
+              <td>114,632</td>
+              <td>0.69</td>
+              <td>96% H₂, 3% He</td>
+              <td>密度低於水、壯麗冰質光環 (卡西尼縫)、北極六角風暴</td>
+            </tr>
+            <tr>
+              <td><strong>天王星 Uranus</strong></td>
+              <td>類木 (冰巨)</td>
+              <td>19.2</td>
+              <td>50,532</td>
+              <td>1.27</td>
+              <td>83% H₂, 15% He, 2% CH₄</td>
+              <td>自轉軸傾斜 98° 橫躺公轉、淡藍綠色甲烷外層、13 道暗環</td>
+            </tr>
+            <tr>
+              <td><strong>海王星 Neptune</strong></td>
+              <td>類木 (冰巨)</td>
+              <td>30.0</td>
+              <td>49,105</td>
+              <td>1.64</td>
+              <td>80% H₂, 19% He, 1.5% CH₄</td>
+              <td>大暗斑、秒速 300 公尺超音速狂風、深藍色甲烷大氣</td>
+            </tr>
+            <tr>
+              <td><strong>冥王星 Pluto</strong></td>
+              <td>矮行星</td>
+              <td>39.5</td>
+              <td>2,376</td>
+              <td>1.88</td>
+              <td>稀薄 N₂, CH₄</td>
+              <td>柯伊伯帶冰質天體、心形氮冰平原、卡戎雙星鎖定</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide 12: 結語與啟示 -->
+    <div class="slide" data-title="總結與前瞻">
+      <span class="badge gold">結語與地質前瞻</span>
+      <h1 class="slide-title">從星塵到地球：星球誕生的地質啟示</h1>
+      <p class="slide-subtitle">太陽系的創生，為地球後續 46 億年的固體圈、水圈、大氣圈與生命奠定了初始基盤</p>
+      <div class="grid-2">
+        <div class="card emerald-border highlight">
+          <h3>🌱 地球的幸運密碼</h3>
+          <ul>
+            <li><strong>黃金距離 (1.0 AU)</strong>：不致像金星水分子蒸發光解，也不像火星全盤封凍，得以保有<strong>液態海洋</strong>。</li>
+            <li><strong>合適質量與重力</strong>：得以留存次生大氣，促成岩石圈、大氣圈與生物圈的碳循環平衡。</li>
+            <li><strong>金屬地核發電機</strong>：熔融鐵鎳外核對流建立全球偶極磁場，數十億年來抵禦致命太陽風。</li>
+          </ul>
+        </div>
+        <div class="card highlight">
+          <h3>⏭️ 接續單元預告</h3>
+          <ul>
+            <li><strong>第 3 講《固體地球的演化》</strong>：地球內部岩漿海冷卻、核函殼地震波探測與月球大碰撞。</li>
+            <li><strong>第 4 講《地體構造與地殼變動》</strong>：板塊漂移、隱沒工廠與台灣弧陸碰撞造山。</li>
+            <li><strong>第 5 講《大氣的形成與演化》</strong>：次生火山去氣、疊層石光合作用與大氧化事件。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:20px;">
+        <div class="callout-icon">🌌</div>
+        <div><em>「我們 DNA 裡的氮，牙齒裡的鈣，血液裡的鐵，都是某顆塌縮恆星內部的熔爐產物。我們本身就是星塵。」—— 卡爾·薩根 (Carl Sagan)</em></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Controls -->
+  <div class="controls">
+    <button class="btn" id="prevBtn" title="上一頁 (←)">‹</button>
+    <div class="slide-counter" id="slideCounter">1 / 12</div>
+    <button class="btn" id="nextBtn" title="下一頁 (→ / Space)">›</button>
+    <div style="width: 1px; height: 18px; background: rgba(255,255,255,0.2);"></div>
+    <button class="btn-text" id="overviewBtn" title="導覽總覽 (O / Esc)">導覽</button>
+    <button class="btn-text" id="fullscreenBtn" title="全螢幕切換 (F)">全螢幕</button>
+  </div>
+
+  <!-- Overview Modal Grid -->
+  <div class="overview-grid" id="overviewGrid">
+    <button class="close-overview" id="closeOverviewBtn">✕</button>
+    <!-- Thumbnails dynamically injected by JS -->
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progressBar');
+    const slideCounter = document.getElementById('slideCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const overviewBtn = document.getElementById('overviewBtn');
+    const closeOverviewBtn = document.getElementById('closeOverviewBtn');
+    const overviewGrid = document.getElementById('overviewGrid');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+
+      slides.forEach((slide, i) => {
+        if (i === currentIndex) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Update progress bar & counter
+      const progress = ((currentIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progress}%`;
+      slideCounter.textContent = `${currentIndex + 1} / ${totalSlides}`;
+
+      // Update overview active thumb if open
+      document.querySelectorAll('.thumb').forEach((thumb, i) => {
+        thumb.classList.toggle('active-thumb', i === currentIndex);
+      });
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) updateSlide(currentIndex - 1);
+    }
+
+    function nextSlide() {
+      if (currentIndex < totalSlides - 1) updateSlide(currentIndex + 1);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (overviewGrid.classList.contains('active')) {
+        if (e.key === 'Escape' || e.key.toLowerCase() === 'o') {
+          toggleOverview();
+        }
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        updateSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        updateSlide(totalSlides - 1);
+      } else if (e.key.toLowerCase() === 'o') {
+        toggleOverview();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // Overview Grid
+    function buildOverview() {
+      slides.forEach((slide, idx) => {
+        const thumb = document.createElement('div');
+        thumb.className = `thumb ${idx === currentIndex ? 'active-thumb' : ''}`;
+        const title = slide.getAttribute('data-title') || `投影片 ${idx + 1}`;
+        const h1 = slide.querySelector('h1') ? slide.querySelector('h1').innerText : '';
+        const subtitle = slide.querySelector('p.slide-subtitle') ? slide.querySelector('p.slide-subtitle').innerText : '';
+
+        thumb.innerHTML = `
+          <div class="thumb-num">SLIDE ${idx + 1}</div>
+          <div class="thumb-title">${title}</div>
+          <div class="thumb-desc">${subtitle || h1}</div>
+        `;
+
+        thumb.addEventListener('click', () => {
+          updateSlide(idx);
+          toggleOverview();
+        });
+
+        overviewGrid.appendChild(thumb);
+      });
+    }
+
+    function toggleOverview() {
+      overviewGrid.classList.toggle('active');
+    }
+
+    overviewBtn.addEventListener('click', toggleOverview);
+    closeOverviewBtn.addEventListener('click', toggleOverview);
+
+    // Fullscreen Toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    // Initial setup
+    buildOverview();
+    updateSlide(0);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>地球誕生與演化｜日系粉綠彩簡報</title>
+<style>
+    :root {
+      --bg-space: #060913;
+      --bg-card: rgba(13, 20, 38, 0.78);
+      --bg-card-border: rgba(56, 189, 248, 0.22);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;     /* 水圈與海洋 */
+      --accent-gold: #f59e0b;     /* 岩漿與核心熱能 */
+      --accent-emerald: #10b981;  /* 生物圈與植被 */
+      --accent-rose: #f43f5e;     /* 火山與板塊造山 */
+      --accent-purple: #a855f7;   /* 星雲與大歷史 */
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      user-select: none;
+      background-image: 
+        radial-gradient(1px 1px at 30px 40px, #ffffff 100%, transparent),
+        radial-gradient(1.5px 1.5px at 150px 90px, rgba(255,255,255,0.7) 100%, transparent),
+        radial-gradient(1.2px 1.2px at 280px 220px, rgba(56,189,248,0.8) 100%, transparent),
+        radial-gradient(2px 2px at 420px 310px, rgba(245,158,11,0.6) 100%, transparent),
+        radial-gradient(1px 1px at 560px 140px, #ffffff 100%, transparent),
+        radial-gradient(circle at 20% 80%, rgba(244, 63, 94, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.07) 0%, transparent 65%),
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+      background-size: 600px 600px, 500px 500px, 700px 700px, 800px 800px, 550px 550px, 100% 100%, 100% 100%, 100% 100%;
+    }
+
+    /* Top Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-rose), var(--accent-gold), var(--accent-emerald), var(--accent-cyan));
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    }
+
+    /* Presentation Deck */
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90vw;
+      max-width: 1350px;
+      height: 84vh;
+      max-height: 820px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 20px;
+      padding: 44px 54px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.1);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(24px) scale(0.98);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-cyan) transparent;
+    }
+
+    .slide::-webkit-scrollbar {
+      width: 6px;
+    }
+    .slide::-webkit-scrollbar-thumb {
+      background: var(--accent-cyan);
+      border-radius: 3px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      z-index: 10;
+    }
+
+    /* Badges & Titles */
+    .badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 5px 13px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+    .badge.gold {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .badge.emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .badge.rose {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose);
+      border-color: rgba(244, 63, 94, 0.35);
+    }
+    .badge.purple {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-purple);
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+
+    h1.slide-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      flex: 1;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      flex: 1;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+
+    .card {
+      background: rgba(26, 36, 60, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    .card.highlight {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(26, 36, 60, 0.75);
+    }
+    .card.gold-border { border-color: rgba(245, 158, 11, 0.4); }
+    .card.rose-border { border-color: rgba(244, 63, 94, 0.4); }
+    .card.emerald-border { border-color: rgba(16, 185, 129, 0.4); }
+    .card.purple-border { border-color: rgba(168, 85, 247, 0.4); }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p, .card li {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .card ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    /* Flow Steps */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(26, 36, 60, 0.5);
+      padding: 14px 18px;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-cyan);
+    }
+    .step-item.gold { border-left-color: var(--accent-gold); }
+    .step-item.emerald { border-left-color: var(--accent-emerald); }
+    .step-item.rose { border-left-color: var(--accent-rose); }
+    .step-item.purple { border-left-color: var(--accent-purple); }
+
+    .step-num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      min-width: 32px;
+    }
+    .step-item.gold .step-num { color: var(--accent-gold); }
+    .step-item.emerald .step-num { color: var(--accent-emerald); }
+    .step-item.rose .step-num { color: var(--accent-rose); }
+    .step-item.purple .step-num { color: var(--accent-purple); }
+
+    .step-content h4 {
+      font-size: 1.02rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+    .step-content p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Comparison Table */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex: 1;
+    }
+    table.slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    table.slide-table th {
+      background: rgba(26, 36, 60, 0.95);
+      padding: 12px 14px;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+      white-space: nowrap;
+    }
+    table.slide-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+    table.slide-table tr:hover td {
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    /* Callout Box */
+    .callout {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .callout-icon { font-size: 1.3rem; }
+
+    /* Bottom Control Bar */
+    .controls {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(13, 20, 38, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      padding: 8px 22px;
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .btn {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+      font-size: 1.1rem;
+    }
+    .btn:hover {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-cyan);
+    }
+    .btn:active { transform: scale(0.92); }
+    .slide-counter {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      min-width: 60px;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+    .btn-text {
+      border-radius: 6px;
+      width: auto;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .btn-text:hover { color: #fff; }
+
+    /* Overview Grid Modal */
+    .overview-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(6, 9, 19, 0.94);
+      backdrop-filter: blur(20px);
+      z-index: 2000;
+      padding: 50px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 20px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .overview-grid.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .thumb {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      height: 160px;
+    }
+    .thumb:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.25);
+    }
+    .thumb.active-thumb {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+    .thumb-num {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 5px;
+    }
+    .thumb-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+    .thumb-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+    }
+    .close-overview {
+      position: fixed;
+      top: 18px;
+      right: 28px;
+      font-size: 1.4rem;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 2001;
+    }
+
+    /* Title Slide Special */
+    .title-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.08) 35%, rgba(13, 20, 38, 0.8) 75%);
+    }
+    .title-slide h1 {
+      font-size: 3.3rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      line-height: 1.18;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-emerald) 70%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .title-slide h2 {
+      font-size: 1.55rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 26px;
+    }
+    .title-meta {
+      font-size: 0.98rem;
+      color: #94a3b8;
+      max-width: 720px;
+      line-height: 1.8;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 18px;
+    }
+
+    /* Deck Ambient Animation */
+    @keyframes pulse-space {
+      0%, 100% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.15); }
+      50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.25); }
+    }
+    .deck { animation: pulse-space 7s infinite ease-in-out; }
+  </style>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><style>
+:root {
+  --bg-space: #F8F4EC;
+  --bg-card: rgba(255, 253, 248, 0.96);
+  --bg-card-border: rgba(148, 166, 157, 0.42);
+  --text-main: #514F4A;
+  --text-muted: #8E9089;
+  --accent-cyan: #94A69D;
+  --accent-gold: #C09A97;
+  --accent-emerald: #94A69D;
+  --accent-rose: #C09A97;
+  --accent-purple: #B5A6B8;
+  --font-family: "Zen Maru Gothic", "Yu Gothic UI", "Hiragino Maru Gothic ProN",
+    "Noto Sans TC", "Microsoft JhengHei", Helvetica, sans-serif;
+}
+html, body {
+  background-color: #F8F4EC;
+  color: #514F4A;
+  font-family: var(--font-family);
+}
+body {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(192,154,151,.13) 0 2px, transparent 3px),
+    radial-gradient(circle at 86% 78%, rgba(148,166,157,.16) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 14%, rgba(239,219,178,.24) 0 3px, transparent 4px),
+    repeating-linear-gradient(0deg, rgba(142,144,137,.025) 0 1px, transparent 1px 5px),
+    linear-gradient(135deg, #FBF8F1, #F4F0E7);
+  background-size: 180px 180px, 220px 220px, 260px 260px, auto, auto;
+}
+.progress-bar-container {
+  height: 7px;
+  background: rgba(192,154,151,.18);
+  box-shadow: 0 2px 10px rgba(80,70,60,.06);
+}
+.progress-bar {
+  background: linear-gradient(90deg, #C09A97 0%, #E8D0BB 48%, #94A69D 100%);
+  box-shadow: 0 0 10px rgba(148,166,157,.28);
+}
+.slide {
+  position: absolute;
+  background:
+    radial-gradient(circle at 96% 5%, rgba(239,219,178,.17), transparent 22%),
+    rgba(255,253,248,.97);
+  border: 1px solid rgba(148,166,157,.38);
+  border-radius: 28px;
+  padding: 42px 48px 94px;
+  box-shadow: 0 18px 48px rgba(105,94,80,.12), 0 3px 10px rgba(105,94,80,.05);
+  backdrop-filter: blur(12px);
+  scrollbar-color: #C09A97 transparent;
+}
+.slide::-webkit-scrollbar-thumb { background: #C09A97; border-radius: 8px; }
+.badge {
+  background: #EAF0EB;
+  color: #657C70;
+  border: 1px solid rgba(148,166,157,.5);
+  border-radius: 999px;
+  letter-spacing: .04em;
+  font-size: .78rem;
+}
+.badge.gold { background:#F7EEE6; color:#A87970; border-color:#E8D0BB; }
+.badge.emerald { background:#EAF0EB; color:#657C70; border-color:#B8C8BE; }
+.badge.rose { background:#F7EDEC; color:#A97875; border-color:#E5C9C5; }
+.badge.purple { background:#F1EDF2; color:#817387; border-color:#D7CBD9; }
+h1.slide-title {
+  color: #625B55;
+  background: linear-gradient(110deg, #74635F 5%, #94A69D 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: .015em;
+  line-height: 1.28;
+}
+p.slide-subtitle { color:#8E9089; }
+.card, .step-item {
+  background: rgba(255,255,252,.86);
+  border: 1px solid rgba(148,166,157,.30);
+  border-radius: 20px;
+  box-shadow: 0 5px 16px rgba(111,102,91,.055);
+}
+.card:hover {
+  border-color: #C09A97;
+  box-shadow: 0 10px 22px rgba(160,132,126,.12);
+}
+.card.highlight { background: #F1F5F0; border-color:#AABCB1; }
+.card.gold-border { border-color:#E8D0BB; }
+.card.rose-border { border-color:#DAB8B5; }
+.card.emerald-border { border-color:#B8C8BE; }
+.card.purple-border { border-color:#D7CBD9; }
+.card h3 { color:#6C655E; }
+.card p, .card li { color:#77766F; }
+.step-item { border-left: 5px solid #94A69D; }
+.step-item.gold { border-left-color:#C09A97; }
+.step-item.emerald { border-left-color:#94A69D; }
+.step-item.rose { border-left-color:#C09A97; }
+.step-item.purple { border-left-color:#B5A6B8; }
+.step-num { color:#71877B; }
+.step-item.gold .step-num, .step-item.rose .step-num { color:#A87970; }
+.step-item.emerald .step-num { color:#71877B; }
+.step-item.purple .step-num { color:#897B8D; }
+.step-content h4 { color:#625B55; }
+.step-content p { color:#85847D; }
+.table-container {
+  border-radius: 20px;
+  border: 1px solid rgba(148,166,157,.42);
+  overflow: hidden;
+  background:#FFFEFA;
+  box-shadow: 0 6px 18px rgba(111,102,91,.06);
+}
+table.slide-table { border-collapse: separate; border-spacing:0; color:#625F58; }
+table.slide-table th {
+  background:#EAF0EB;
+  color:#61776B;
+  border-bottom:2px solid #C7D5CB;
+}
+table.slide-table td {
+  color:#716E67;
+  border-bottom:1px solid #EEE9E0;
+}
+table.slide-table tr:nth-child(even) td { background:#FBF8F2; }
+table.slide-table tr:hover td { background:#F7EEEA; }
+.callout {
+  background:#F8F1EA;
+  border:1px dashed #D9B9B2;
+  border-radius:18px;
+  color:#756A63;
+}
+.controls {
+  background:rgba(255,253,248,.94);
+  border:1px solid rgba(148,166,157,.38);
+  box-shadow:0 8px 24px rgba(105,94,80,.14);
+  backdrop-filter:blur(14px);
+}
+.btn { color:#74877D; }
+.btn:hover { background:#EAF0EB; color:#A87970; }
+.slide-counter { color:#A87970; }
+.btn-text { color:#8E9089; }
+.btn-text:hover { color:#657C70; }
+.overview-grid {
+  background:rgba(248,244,236,.97);
+  backdrop-filter:blur(18px);
+}
+.thumb {
+  background:#FFFEFA;
+  border:1px solid rgba(148,166,157,.36);
+  border-radius:20px;
+  box-shadow:0 5px 14px rgba(105,94,80,.06);
+}
+.thumb:hover { border-color:#C09A97; box-shadow:0 10px 22px rgba(160,132,126,.13); }
+.thumb.active-thumb { border-color:#94A69D; box-shadow:0 0 0 3px rgba(148,166,157,.18); }
+.thumb-num { color:#A87970; }
+.thumb-title { color:#625B55; }
+.thumb-desc { color:#8E9089; }
+.title-slide {
+  justify-content:center;
+  align-items:flex-start;
+  background:
+    radial-gradient(circle at 82% 22%, rgba(239,219,178,.38), transparent 25%),
+    radial-gradient(circle at 15% 88%, rgba(192,154,151,.16), transparent 30%),
+    linear-gradient(135deg,#FFFCF6,#F2F5EF);
+}
+.title-slide h1.slide-title {
+  font-size:clamp(2.8rem,5vw,5rem);
+  max-width:850px;
+  margin-top:10px;
+}
+.title-slide h2 {
+  color:#8E9089;
+  font-weight:500;
+  font-size:clamp(1.15rem,2vw,1.65rem);
+  letter-spacing:.08em;
+}
+.cover-subtitle {
+  margin-top:22px;
+  padding:14px 22px;
+  border-radius:999px;
+  color:#7A8178;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(148,166,157,.35);
+  font-size:1rem;
+}
+.slide-role {
+  position:absolute;
+  right:28px;
+  bottom:16px;
+  width:clamp(88px, 11vw, 148px);
+  max-height:25%;
+  object-fit:contain;
+  object-position:right bottom;
+  z-index:3;
+  pointer-events:none;
+  filter:drop-shadow(0 5px 5px rgba(90,80,70,.13));
+}
+.title-slide .slide-role {
+  width:clamp(160px, 22vw, 260px);
+  max-height:42%;
+  right:42px;
+  bottom:28px;
+}
+@media (max-width: 760px) {
+  .slide { width:96vw; height:88vh; padding:28px 22px 100px; border-radius:22px; }
+  .slide-role { width:86px; right:12px; bottom:12px; }
+  .title-slide .slide-role { width:150px; right:14px; bottom:16px; }
+  h1.slide-title { font-size:1.7rem; }
+  .grid-4 { grid-template-columns:repeat(2,1fr); }
+  .grid-3 { grid-template-columns:repeat(1,1fr); }
+}
+</style></head>
+<body>
+<!-- Top Progress Bar -->
+<div class="progress-bar-container">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<!-- Deck Container -->
+<div class="deck">
+<!-- Slide 1: 封面 -->
+<div class="slide title-slide active" data-title="封面">
+<span class="badge emerald">A LITTLE JOURNEY THROUGH EARTH HISTORY</span>
+<h1 class="slide-title">地球的誕生與演化</h1>
+<h2>Birth and Evolution of the Earth</h2>
+
+<p class="cover-subtitle">從星塵、海洋到生命，探索 46 億年的地球故事</p><img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="eager" src="../assets/role/17大行星.png"/></div>
+<!-- Slide 2: 宏觀地質年代尺度 -->
+<div class="slide" data-title="大歷史時間軸">
+<span class="badge purple">時間尺度與演化序章</span>
+<h1 class="slide-title">深時歷史：46 億年演化大時鐘</h1>
+<p class="slide-subtitle">將宇宙 138 億年大歷史與地球 46 億年地質時序編織為宏觀演化坐標 (Ga: 十億年 / Ma: 百萬年)</p>
+<div class="grid-4">
+<div class="card purple-border">
+<span class="badge purple">4.6 ~ 4.0 Ga</span>
+<h3>冥古宙 (Hadean)</h3>
+<p><strong>創生與地核成形</strong></p>
+<ul>
+<li>4.6 Ga 太陽星雲微行星吸積</li>
+<li>4.5 Ga 忒伊亞撞擊誕生月球</li>
+<li>岩漿海與重力元素分異</li>
+<li>4.2 Ga 水氣凝結原始海洋</li>
+</ul>
+</div>
+<div class="card gold-border">
+<span class="badge gold">4.0 ~ 2.5 Ga</span>
+<h3>太古宙 (Archean)</h3>
+<p><strong>無氧還原與早期生命</strong></p>
+<ul>
+<li>3.8 Ga 最古老陸殼岩石</li>
+<li>3.5 Ga 藍綠菌疊層石行光合作用</li>
+<li>海洋二價鐵沉澱層狀鐵礦 (BIF)</li>
+<li>火山去氣維持還原環境</li>
+</ul>
+</div>
+<div class="card emerald-border">
+<span class="badge emerald">2.5 ~ 0.54 Ga</span>
+<h3>元古宙 (Proterozoic)</h3>
+<p><strong>氧氣革命與環境劇變</strong></p>
+<ul>
+<li>2.4~2.1 Ga 休倫大冰期</li>
+<li>2.2 Ga 海洋鐵庫耗盡、紅層出現</li>
+<li><strong>2.0 Ga 大氧化事件 (GOE)</strong></li>
+<li>0.8 Ga 臭氧層形成與大氣穩定</li>
+</ul>
+</div>
+<div class="card highlight">
+<span class="badge">0.54 Ga ~ 現今</span>
+<h3>顯生宙 (Phanerozoic)</h3>
+<p><strong>板塊變遷與生命爆發</strong></p>
+<ul>
+<li>541 Ma 寒武紀生命大爆發</li>
+<li>170 Ma 盤古大陸分裂與洋底擴張</li>
+<li>66 Ma 隕石撞擊恐龍滅絕</li>
+<li>3 Ma 台灣弧陸碰撞與人類出現</li>
+</ul>
+</div>
+</div>
+<div class="callout">
+<div class="callout-icon">⏳</div>
+<div><strong>深時智慧 (Deep Time)</strong>：人類文明的數千年歷史，若縮尺為地球的一天 24 小時，僅僅佔據午夜最後不到 0.2 秒。</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/08閱讀.png"/></div>
+<!-- Slide 3: 星雲起源與微行星吸積 -->
+<div class="slide" data-title="星雲起源與吸積">
+<span class="badge">星際起點</span>
+<h1 class="slide-title">地球的誕生：星雲坍縮與微行星吸積</h1>
+<p class="slide-subtitle">46 億年前，原始太陽系星雲在動態熱梯度下的碰撞與凝結</p>
+<div class="grid-2">
+<div class="flow-steps">
+<div class="step-item">
+<div class="step-num">01</div>
+<div class="step-content">
+<h4>星雲盤冷凝與凍結線篩選</h4>
+<p>在太陽熱輻射梯度下，距日 1.0 AU 處溫度高達數百至上千度，水、氨等揮發分無法凝結，僅金屬（鐵、鎳）與矽酸鹽微塵得以固化。</p>
+</div>
+</div>
+<div class="step-item gold">
+<div class="step-num">02</div>
+<div class="step-content">
+<h4>赤道面沉降與微行星吸積 (Accretion)</h4>
+<p>微米級塵埃在氣體阻尼下沉降至星雲盤赤道面，經凡得瓦力與局部重力擾動黏合，聚集成千米級「微行星 (Planetesimals)」。</p>
+</div>
+</div>
+<div class="step-item rose">
+<div class="step-num">03</div>
+<div class="step-content">
+<h4>暴走增生 (Runaway Growth) 到大碰撞</h4>
+<p>天體愈大引力截面積愈大，迅速吞噬周圍碎塊長成火星大小之原行星，最終在交叉軌道的大碰撞中奠定原始地球。</p>
+</div>
+</div>
+</div>
+<div class="card highlight">
+<h3>☄️ 地球年齡 46 億年的鐵證</h3>
+<p>地球自身的地表岩石因活躍的板塊運動與風化侵蝕，早已找不到創生初期的原始地殼。科學家如何精準定年？</p>
+<ul>
+<li><strong>隕石作為「時間膠囊」</strong>：太陽系未參與行星分異的小行星殘骸，封存了太陽系初生的原初同位素比值。</li>
+<li><strong>著名隕石坑實證</strong>：美國亞利桑納州巴林傑隕石坑 (Barringer Crater)、西澳洲狼溪隕石坑 (Wolfe Creek Crater) 的隕石樣本定年，高度收斂於 <strong>45.67 億年 (~4.6 Ga)</strong>。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/06思考.png"/></div>
+<!-- Slide 4: 忒伊亞撞擊與月球誕生 -->
+<div class="slide" data-title="忒伊亞碰撞與月球">
+<span class="badge rose">行星級巨大災變</span>
+<h1 class="slide-title">大碰撞假說：忒伊亞 (Theia) 與月球誕生</h1>
+<p class="slide-subtitle">約 45 億年前的斜向毀滅碰撞，為地球帶來了獨一無二的大型衛星守護者</p>
+<div class="grid-2">
+<div class="card rose-border highlight">
+<span class="badge rose">碰撞物理動力學</span>
+<h3>💥 忒伊亞大碰撞過程</h3>
+<ul>
+<li><strong>碰撞體</strong>：一顆火星大小的原行星「忒伊亞 (Theia)」，在軌道攝動下以斜角高速衝撞原始地球。</li>
+<li><strong>地核熔合</strong>：撞擊產生極端高溫，忒伊亞的金屬鐵核沈入原始地球地心，融入地球地核。</li>
+<li><strong>碎屑盤吸積</strong>：碰撞拋射出大量地函矽酸鹽熔融碎塊，在近地軌道形成碎片盤，數百年內迅速吸積為<strong>月球 (The Moon)</strong>。</li>
+<li><strong>阿波羅登月證據</strong>：月岩氧同位素與地球地函完全一致，且月球極端缺乏金屬鐵核與揮發性水份。</li>
+</ul>
+</div>
+<div class="card emerald-border highlight">
+<span class="badge emerald">生命宜居效應</span>
+<h3>🛡️ 月球對地球演化的三大恩賜</h3>
+<ul>
+<li><strong>穩定自轉軸傾角 (23.44°)</strong>：月球巨大潮汐力如陀螺儀般錨定了地球自轉傾角，避免氣候失控動盪（反觀火星自轉軸大幅擺動）。</li>
+<li><strong>潮汐摩擦與自轉減速</strong>：原始地球自轉一天僅約 6 小時，月球引力引發潮汐煞車，拉長日照時長；月球目前正以每年 3.8 cm 遠離。</li>
+<li><strong>孕育潮間帶生態</strong>：潮汐週期性乾濕交替，為早期水生生物邁向陸地演化搭建了理想緩衝平台。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/09驚訝.png"/></div>
+<!-- Slide 5: 岩漿海與地球內部元素分異 -->
+<div class="slide" data-title="岩漿海與地球分異">
+<span class="badge gold">地球物理化學重組</span>
+<h1 class="slide-title">岩漿海與地球元素分異作用</h1>
+<p class="slide-subtitle">46~35 億年前，動能熱與放射熱熔融地球，重力驅動內部核、函、殼三層圈分立</p>
+<div class="grid-3">
+<div class="card gold-border">
+<span class="badge gold">熱力學起點</span>
+<h3>🔥 四大初始熱源</h3>
+<ul>
+<li><strong>重力收縮位能熱</strong>：物質向中心塌縮釋放勢能。</li>
+<li><strong>撞擊動能轉化熱</strong>：密集微行星劇烈衝撞。</li>
+<li><strong>放射性衰變熱</strong>：²⁶Al、⁶⁰Fe 等短半衰期與長半衰期元素衰變。</li>
+<li><strong>自轉角動量摩擦熱</strong>。</li>
+</ul>
+<p style="margin-top:8px; font-size:0.85rem; color:#f59e0b;">➔ 全球熔融形成深達數千公里的「岩漿海 (Magma Ocean)」。</p>
+</div>
+<div class="card highlight">
+<span class="badge">化學分異機制</span>
+<h3>⚖️ 重力分層沉浮</h3>
+<ul>
+<li><strong>親鐵元素下沉 (Sinking)</strong>：密度極大的金屬鐵 (Fe)、鎳 (Ni) 沈入地心，耗時約一億年凝聚為<strong>地核 (Core)</strong>。</li>
+<li><strong>輕質矽酸鹽浮升 (Floating)</strong>：鎂鐵矽酸鹽冷凝為<strong>地函 (Mantle)</strong>，極輕質矽鋁質殘餘熔體浮升結晶為<strong>原始地殼 (Crust)</strong>。</li>
+<li><strong>氣體排氣 (Outgassing)</strong>：揮發物釋放。</li>
+</ul>
+</div>
+<div class="card emerald-border">
+<span class="badge emerald">構造結果</span>
+<h3>🌐 現今三大圈層確立</h3>
+<ul>
+<li><strong>地核 (Core, 半徑 3500km)</strong>：外核液態鐵硫、內核固態鐵鎳（佔質量 32%）。</li>
+<li><strong>地函 (Mantle, 厚 2900km)</strong>：高溫塑性矽酸鹽，佔地球體積 <strong>80%</strong>。</li>
+<li><strong>地殼 (Crust, 5~40km)</strong>：剛性岩石圈外皮，佔總體積僅約 <strong>1%</strong>。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/03講解.png"/></div>
+<!-- Slide 6: 地震波與地球內部構造探測 -->
+<div class="slide" data-title="地震波探測深部">
+<span class="badge">地球物理探測</span>
+<h1 class="slide-title">地震波密碼：揭開深部 6,371 公里構造</h1>
+<p class="slide-subtitle">人類無法直接鑽探地函，透過地震波在固態與液態介質的折射衰減解碼地球深部</p>
+<div class="grid-2">
+<div class="card highlight">
+<h3>📡 體波 (Body Waves) 物理特性對決</h3>
+<table class="slide-table" style="margin-top:10px;">
+<thead>
+<tr>
+<th>特性指標</th>
+<th>P波 (壓縮波 / 縱波)</th>
+<th>S波 (剪切波 / 橫波)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>振動方向</strong></td>
+<td>質點平行波前進方向</td>
+<td>質點垂直波前進方向</td>
+</tr>
+<tr>
+<td><strong>傳播介質</strong></td>
+<td><strong>固體、液體、氣體</strong>皆可</td>
+<td><strong>僅限固體</strong> (剪切模量&gt;0)</td>
+</tr>
+<tr>
+<td><strong>波速</strong></td>
+<td>較快 (~6 - 13 km/s)</td>
+<td>較慢 (~3.5 - 7 km/s)</td>
+</tr>
+<tr>
+<td><strong>地質意義</strong></td>
+<td>探測介質密度與壓縮性突變</td>
+<td><strong>S波中斷為液態介質之鐵證</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="card rose-border">
+<h3>🌑 S波陰影帶 (Shadow Zone) 的物理鐵證</h3>
+<ul>
+<li><strong>105° ~ 180° S波完全消失</strong>：全球距震央大於 105° 之測站完全接收不到直達 S波。因為 S波無法穿透液體，<strong>直接證實地表 2,900 公里以下存在厚達 2,300 公里的「液態鐵鎳外核」</strong>。</li>
+<li><strong>105° ~ 142° P波折射陰影</strong>：P波進入低速液態外核發生向內劇烈折射，形成環狀陰影帶。</li>
+<li><strong>雷曼不連續面 (5,150 km)</strong>：陰影區內微弱反射波（PKiKP）揭示內部存在超高壓維持固相的<strong>固態內核</strong>。</li>
+</ul>
+</div>
+</div>
+<div class="callout">
+<div class="callout-icon">🌐</div>
+<div><strong>全球地震波斷層掃描 (Tomography)</strong>：現代高速電腦反演如同醫學 CT，清楚成像出低溫隱沒洋殼沉入核函交界，以及熱地函柱自深部升起的立體熱對流圖像。</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/02觀察.png"/></div>
+<!-- Slide 7: 次生大氣火山去氣與海洋誕生 -->
+<div class="slide" data-title="次生大氣與海洋">
+<span class="badge gold">流體圈創生</span>
+<h1 class="slide-title">次生大氣與 42 億年前原始海洋誕生</h1>
+<p class="slide-subtitle">原始氫氦被 T-Tauri 太陽風吹蝕殆盡，火山去氣作用奠定今日流體圈基礎</p>
+<div class="grid-2">
+<div class="flow-steps">
+<div class="step-item rose">
+<div class="step-num">01</div>
+<div class="step-content">
+<h4>原生大氣遭強烈星風吹散</h4>
+<p>原恆星太陽爆發極強的 <strong>金牛座 T 型星風暴 (T-Tauri Solar Wind)</strong>，吹散內行星原始氫氦包層，迫使地球必須依靠內部排氣重新建立「次生大氣」。</p>
+</div>
+</div>
+<div class="step-item gold">
+<div class="step-num">02</div>
+<div class="step-content">
+<h4>火山去氣作用 (Volcanic Outgassing)</h4>
+<p>微行星撞擊與劇烈火山噴發釋出地函揮發分，成分序列為：<br/>
+<strong>H₂O &gt; CO₂ &gt; SO₂ &gt; Cl / HCl &gt; N₂</strong>。</p>
+</div>
+</div>
+<div class="step-item emerald">
+<div class="step-num">03</div>
+<div class="step-content">
+<h4>凝結成海與氮氣富集 (4.2 Ga)</h4>
+<p>地表冷卻後水蒸氣成雲降雨，沉降形成<strong>原始海洋</strong>。雨水溶解巨量酸性 CO₂ 與 SO₂，化學惰性且水溶性極低的 <strong>N₂ 逐漸留存成為大氣主體 (78%)</strong>。</p>
+</div>
+</div>
+</div>
+<div class="card highlight">
+<h3>🌊 海洋：地球恆溫的救贖沉降槽</h3>
+<p>地球之所以免於淪為金星煉獄，核心關鍵在於<strong>液態水海洋的存在</strong>：</p>
+<ul>
+<li><strong>吸收 99% 以上的碳</strong>：巨量二氧化碳溶解於雨水與海水，與地殼鈣離子結合成碳酸鈣（石灰岩）沉積於洋底。</li>
+<li><strong>鹽度的化學起源</strong>：火山噴出之酸性氯離子 (Cl⁻) 溶解於水，與風化玄武岩釋放之鈉離子 (Na⁺) 結合，使海水迅速累積氯化鈉 (NaCl) 鹽度。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/14小太陽.png"/></div>
+<!-- Slide 8: 早期還原環境與生命起源 -->
+<div class="slide" data-title="早期還原環境與生命">
+<span class="badge purple">生物化學起點</span>
+<h1 class="slide-title">早期無氧還原環境與原始生命萌芽</h1>
+<p class="slide-subtitle">缺氧環境是無機分子合成有機單體的溫床；硫光化學構築早期抗紫外線防護罩</p>
+<div class="grid-2">
+<div class="card purple-border highlight">
+<span class="badge purple">古大氣化學</span>
+<h3>🧪 還原環境 (Reducing Environment) 的必要性</h3>
+<ul>
+<li><strong>成分特徵</strong>：富含甲烷 (CH₄)、二氧化碳 (CO₂)、氮氣 (N₂)、水蒸氣與一氧化碳，<strong>完全無游離氧 (O₂)</strong>。</li>
+<li><strong>化學起源之鑰</strong>：微量游離氧會迅速氧化破壞胺基酸、核苷酸等原始生化前驅物。缺乏氧氣的強還原環境，為無機轉有機的原始生命創生提供了絕佳保護。</li>
+<li><strong>微量氧的下場</strong>：早期光解產生的任何微量氧分子，瞬間與地殼中溶解的二價鐵 (Fe²⁺) 及還原硫反應消耗殆盡。</li>
+</ul>
+</div>
+<div class="card emerald-border highlight">
+<span class="badge emerald">生命防護屏障</span>
+<h3>🛡️ 硫光化學作用 (Sulfur Photochemistry)</h3>
+<ul>
+<li><strong>無臭氧層危機</strong>：在氧氣尚未生成的年代，高能紫外線 (UV) 直射地表，能輕易光解破壞原始生命的蛋白質與氨 (NH₃)。</li>
+<li><strong>硫分子遮罩</strong>：早期火山噴出的二氧化硫在光化學反應下形成八硫分子 (S₈)，能高效吸收致命紫外波段，充當早期地球的「臨時防曬霜」。</li>
+<li><strong>3.6 Ga 生命曙光</strong>：澳洲與格陵蘭發現 38~36 億年前碳同位素負異常與微化石，標誌著厭氧古菌與細菌的正式登台。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/01疑問.png"/></div>
+<!-- Slide 9: 疊層石與大氧化事件 (GOE) -->
+<div class="slide" data-title="大氧化事件 (GOE)">
+<span class="badge emerald">生物地質大轉折</span>
+<h1 class="slide-title">藍綠菌、疊層石與大氧化事件 (GOE)</h1>
+<p class="slide-subtitle">生命重塑大氣圈：35 億年光合放氧，在 20 億年前終結無氧時代</p>
+<div class="grid-3">
+<div class="card emerald-border">
+<span class="badge emerald">光合自營革命</span>
+<h3>🦠 疊層石 (Stromatolites)</h3>
+<ul>
+<li><strong>3.5 Ga 登場</strong>：藍綠菌 (Cyanobacteria) 分泌黏液捕獲沉積物，向上向光生長形成紋層狀岩石。</li>
+<li><strong>產氧光合作用</strong>：以水為電子供體釋出氧氣 ($H_2O + CO_2 \to CH_2O + O_2$)。</li>
+<li><strong>澳洲鯊魚灣</strong>：高鹽海灣完整保留現代活體疊層石群落。</li>
+</ul>
+</div>
+<div class="card gold-border">
+<span class="badge gold">海洋鐵庫沉降槽</span>
+<h3>⛏️ 層狀鐵礦層 (BIF)</h3>
+<ul>
+<li><strong>3.5 ~ 2.2 Ga 沉積高峰</strong>：海水富含熱水礦脈溶解的二價鐵 ($Fe^{2+}$)，將藍綠菌釋放的氧氣全數攔截。</li>
+<li><strong>黑紅相間條帶</strong>：磁鐵礦/赤鐵礦與燧石互層，<strong>鎖定了地質史上 83% 以上的總產氧量</strong>，成為現代全球鐵礦基石。</li>
+</ul>
+</div>
+<div class="card rose-border">
+<span class="badge rose">大氣氧化分水嶺</span>
+<h3>⚡ 氧氣革命 (GOE ~2.0 Ga)</h3>
+<ul>
+<li><strong>2.2 Ga 鐵庫耗竭</strong>：BIF 沉積驟減，氧氣溢出海洋進入大氣。</li>
+<li><strong>休倫大冰期</strong>：氧氣氧化甲烷，溫室效應崩潰引發全球雪球。</li>
+<li><strong>陸地紅層 (Red Beds)</strong>：2.2 Ga 陸地沉積物首次被三價鐵染紅；高空生成<strong>臭氧層 (O₃)</strong>。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/05驚喜.png"/></div>
+<!-- Slide 10: 板塊構造學說革命 -->
+<div class="slide" data-title="板塊構造學說">
+<span class="badge rose">固體動力引擎</span>
+<h1 class="slide-title">固體地球的動態引擎：板塊構造學說</h1>
+<p class="slide-subtitle">岩石圈剛性板塊漂移於塑性軟流圈之上，主宰造山、地震與全球物質循環</p>
+<div class="grid-2">
+<div class="card highlight">
+<h3>🧭 科學突破三部曲</h3>
+<ul>
+<li><strong>1. 大陸漂移說 (1912)</strong>：韋格納提出盤古大陸 (Pangea) 假說，基於大西洋海岸吻合、舌羊齒化石與古冰川遺跡；但困於驅動力未明。</li>
+<li><strong>2. 海底擴張學說 (1960s)</strong>：大洋中脊測繪與<strong>古地磁條帶 (Vine-Matthews-Morley 假說)</strong>，證實中洋脊如「天然磁帶」持續記錄地磁逆轉向兩側擴張。</li>
+<li><strong>3. 板塊構造奠定 (1968~)</strong>：深海鑽探 (Glomar Challenger) 實證洋殼年齡距脊對稱遞增（最老洋殼僅 1.7 億年），確立岩石圈板塊架構。</li>
+</ul>
+</div>
+<div class="card rose-border">
+<h3>⚙️ 板塊漂移三大驅動力</h3>
+<ol style="padding-left:18px; margin-top:8px;">
+<li style="margin-bottom:8px;"><strong>板塊拉力 (Slab Pull - 最關鍵力量)</strong>：老齡冷洋殼在海溝隱沒時相變為高密度榴輝岩，在重力牽引下如沉錨般拖拉整個板塊前進。</li>
+<li style="margin-bottom:8px;"><strong>地函熱對流 (Mantle Convection)</strong>：深部地函柱熱對流驅動上覆板塊水平位移。</li>
+<li><strong>脊推力 (Ridge Push)</strong>：中洋脊熱膨脹高聳，產生向兩側滑動之重力下滑分力。</li>
+</ol>
+<div class="callout" style="margin-top:14px;">
+<div class="callout-icon">🌋</div>
+<div><strong>環太平洋火圈 (Ring of Fire)</strong>：集中全球 80% 大地震與 75% 活火山，為板塊隱沒帶集中表現。</div>
+</div>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/10開心奔跑.png"/></div>
+<!-- Slide 11: 隱沒工廠與大陸地殼製造 -->
+<div class="slide" data-title="隱沒工廠">
+<span class="badge">岩石學奇蹟</span>
+<h1 class="slide-title">隱沒工廠 (The Subduction Factory)</h1>
+<p class="slide-subtitle">洋殼板塊深潛脫水熔融，結晶分異淬煉花崗岩質「大陸地殼」</p>
+<div class="grid-2">
+<div class="flow-steps">
+<div class="step-item">
+<div class="step-num">進料</div>
+<div class="step-content">
+<h4>原料進廠：海洋岩石圈與沉積物</h4>
+<p>含水玄武岩洋殼 (MORB) 與飽含生源有機質之沉積物受板塊拉力滑入海溝隱沒帶。</p>
+</div>
+</div>
+<div class="step-item gold">
+<div class="step-num">催化</div>
+<div class="step-content">
+<h4>高溫高壓脫水與地函降熔</h4>
+<p>板塊深潛加壓釋放熱水流體（H₂O、CO₂），向上交代地函楔橄欖岩，大幅降低岩石熔點 (Flux Melting) 產生原始岩漿。</p>
+</div>
+</div>
+<div class="step-item emerald">
+<div class="step-num">產出</div>
+<div class="step-content">
+<h4>結晶分異：製造花崗岩質大陸地殼</h4>
+<p>岩漿在庫內結晶分異，提煉出富矽鋁 (Si-Al) 的花崗岩與安山岩質輕熔漿，永久浮於地表，造就了地球獨有的大陸地殼。</p>
+</div>
+</div>
+</div>
+<div class="card highlight">
+<h3>♻️ 地球深層物質與揮發分大循環</h3>
+<ul>
+<li><strong>水圈永續引擎</strong>：海水經蛇紋岩化隨洋殼進入隱沒帶，部分藉火山噴發返回地表，維持數十億年水循環平衡。</li>
+<li><strong>廢料深埋與地函非均質</strong>：脫水榴輝岩化殘塊與下部地殼沉降穿透 660 km 過渡帶，沉積於 2,900 km 核函邊界的「板塊墓園」，成為後續地函熱柱（海島玄武岩 OIB）的補給庫。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/03講解.png"/></div>
+<!-- Slide 12: 台灣大地構造與地質分區 -->
+<div class="slide" data-title="台灣活動造山帶">
+<span class="badge rose">造山天然實驗室</span>
+<h1 class="slide-title">活動造山帶：台灣大地構造與地質分區</h1>
+<p class="slide-subtitle">菲律賓海板塊每年 8.2 cm 擠壓歐亞大陸，世界上擠壓抬升最迅速的弧陸碰撞帶</p>
+<div class="grid-2">
+<div class="card rose-border highlight">
+<span class="badge rose">雙隱沒樞紐與弧陸碰撞</span>
+<h3>⛰️ 台灣特殊的板塊格局</h3>
+<ul>
+<li><strong>中段：弧陸碰撞 (Arc-Continent Collision)</strong>：菲律賓海板塊載運呂宋島弧，斜向撞擊歐亞大陸棚被動邊緣，地盤上升率 &gt; 5 mm/年。</li>
+<li><strong>東北段：琉球隱沒系統</strong>：菲律賓海板塊沿琉球海溝向北隱沒，伴隨沖繩海槽弧後張裂與龜山島火山。</li>
+<li><strong>西南段：馬尼拉隱沒系統</strong>：南海歐亞洋殼向東隱沒至菲律賓海板塊下方。</li>
+</ul>
+</div>
+<div class="card highlight">
+<span class="badge">本島五大構造岩相帶 (東 ➔ 西)</span>
+<table class="slide-table" style="margin-top:6px;">
+<tbody>
+<tr>
+<td><strong>1. 海岸山脈</strong></td>
+<td>呂宋火山島弧殘塊 (都巒山安山岩、利吉混同層)</td>
+</tr>
+<tr>
+<td><strong>2. 花東縱谷</strong></td>
+<td><strong>兩大板塊碰撞縫合帶 (Suture Zone)</strong>，斷層位移劇烈</td>
+</tr>
+<tr>
+<td><strong>3. 中央山脈</strong></td>
+<td>古老變質基盤大南澳雜岩、脊樑山脈變質砂岩與板岩</td>
+</tr>
+<tr>
+<td><strong>4. 雪山山脈</strong></td>
+<td>漸新世張裂盆地受擠壓反轉逆衝之厚層四稜砂岩帶</td>
+</tr>
+<tr>
+<td><strong>5. 西部麓山帶</strong></td>
+<td>新生代淺海砂頁岩，強烈褶皺逆衝斷層帶 (車籠埔斷層)</td>
+</tr>
+<tr>
+<td><strong>6. 海岸平原</strong></td>
+<td>現代前陸沉積盆地，台南台地為盲斷層褶皺隆起</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/02觀察.png"/></div>
+<!-- Slide 13: 金星、地球與火星命運分水嶺 -->
+<div class="slide" data-title="三行星命運分歧">
+<span class="badge gold">跨行星比較地質學</span>
+<h1 class="slide-title">金星、地球與火星：命運分水嶺</h1>
+<p class="slide-subtitle">相同起點的火山去氣，因「日距位置」與「板塊運動」走向三個極端世界</p>
+<div class="grid-3">
+<div class="card rose-border">
+<span class="badge rose">0.72 AU</span>
+<h3>金星 (Venus)</h3>
+<p><strong>失控溫室煉獄 (Runaway Greenhouse)</strong></p>
+<ul>
+<li>距日過近，水蒸氣從未飽和降雨。</li>
+<li>水蒸氣積聚引發失控溫室，表面高達 <strong>470℃ (90 atm)</strong>。</li>
+<li>水分子受紫外光解逃逸，缺乏水溶解 CO₂，大氣全為二氧化碳。</li>
+</ul>
+</div>
+<div class="card emerald-border highlight">
+<span class="badge emerald">1.00 AU</span>
+<h3>地球 (Earth)</h3>
+<p><strong>動態恆溫生機綠洲</strong></p>
+<ul>
+<li>黃金距離使水凝結為海洋 (4.2 Ga)。</li>
+<li>海洋溶解 99% 二氧化碳沉澱為石灰岩，<strong>板塊運動維繫碳循環調溫器</strong>。</li>
+<li>生物光合作用賦予 21% O₂ 與臭氧層。</li>
+</ul>
+</div>
+<div class="card gold-border">
+<span class="badge gold">1.52 AU</span>
+<h3>火星 (Mars)</h3>
+<p><strong>大氣散逸與冰封荒漠</strong></p>
+<ul>
+<li>質量僅地球 1/10，內部快速冷卻。</li>
+<li>地核發電機停擺，磁場消失，太陽風剝光大氣 (剩 0.006 atm)。</li>
+<li>低溫使水封凍於地下冰與極冠，無水溶解氣體，殘存冰冷 CO₂。</li>
+</ul>
+</div>
+</div>
+<div class="callout">
+<div class="callout-icon">📍</div>
+<div><strong>地學真理</strong>：決定一顆行星生死的法則首重<strong>「位置 (Location!)」</strong>，而決定這顆星球能否跨越數十億年維持恆溫的關鍵則是<strong>「板塊構造碳循環」</strong>。</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/06思考.png"/></div>
+<!-- Slide 14: 稀有地球假說 -->
+<div class="slide" data-title="稀有地球假說">
+<span class="badge purple">天體生物學省思</span>
+<h1 class="slide-title">稀有地球假說 (Rare Earth Hypothesis)</h1>
+<p class="slide-subtitle">彼得·沃德《地球是孤獨的》：微生物可能普遍，但複雜多細胞生命極其罕見</p>
+<div class="grid-2">
+<div class="card purple-border highlight">
+<span class="badge purple">核心命題</span>
+<h3>🌌 微生物普遍，高等生命極度孤獨</h3>
+<p>只要具備液態水與基本化學能量梯度，單細胞原核生物極易在極端環境誕生。然而，從單細胞演化為多細胞動物與智慧文明，需要**一連串概率極低的天文與地質巧合長達 40 億年不中斷的完美疊加**。</p>
+<ul style="margin-top:10px;">
+<li><strong>銀河系宜居帶</strong>：遠離超新星爆發中心，又富含重金屬元素。</li>
+<li><strong>單一 G 型主序星</strong>：太陽光度穩定，壽命長達 100 億年。</li>
+<li><strong>大質量木星屏障</strong>：作為「宇宙吸塵器」清空彗星與小行星威脅。</li>
+</ul>
+</div>
+<div class="card emerald-border highlight">
+<span class="badge emerald">地質學巧合</span>
+<h3>🌍 固體地球的關鍵地質護盾</h3>
+<ul>
+<li><strong>適度質量與元素分異</strong>：留住大氣與液態水，液態金屬外核對流產生全球磁場，屏蔽致命太陽風。</li>
+<li><strong>活耀的板塊構造</strong>：全球碳－矽酸鹽循環充當自動地溫調節器，防止陷入金星失控溫室或火星冰封。</li>
+<li><strong>不相稱的大衛星月球</strong>：大碰撞誕生之月球，以潮汐力穩固自轉軸傾角 (23.5°)，避免全球氣候劇烈翻轉。</li>
+</ul>
+</div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/01疑問.png"/></div>
+<!-- Slide 15: 總結：動態交織的有機生命體 -->
+<div class="slide" data-title="總結與省思">
+<span class="badge emerald">總結與終章</span>
+<h1 class="slide-title">地球：岩石、大氣與生命交織的有機奇蹟</h1>
+<p class="slide-subtitle">從 46 億年前的星塵熔爐，到今天生機盎然的藍色星球</p>
+<div class="grid-4">
+<div class="card">
+<span class="badge">岩石圈 Lithosphere</span>
+<h3>🪨 固體脈動</h3>
+<p>地函對流與板塊構造不斷撕裂、聚合大陸，在海溝與造山帶中重塑地貌。</p>
+</div>
+<div class="card gold-border">
+<span class="badge gold">地核 Core</span>
+<h3>⚡ 無形護盾</h3>
+<p>液態外核發電機每分每秒旋轉維繫磁場，阻擋高能宇宙輻射。</p>
+</div>
+<div class="card emerald-border">
+<span class="badge emerald">水圈與大氣 Hydrosphere</span>
+<h3>🌊 恆溫循環</h3>
+<p>海洋與大氣協同光合作用，調控 21% 氧氣與溫室效應平衡。</p>
+</div>
+<div class="card purple-border">
+<span class="badge purple">生物圈 Biosphere</span>
+<h3>🌿 共演共生</h3>
+<p>生命不再只是環境的被動適應者，而是徹底重構大氣圈與沉積岩的強大營力。</p>
+</div>
+</div>
+<div class="callout" style="margin-top:20px;">
+<div class="callout-icon">✨</div>
+<div><em>「地球並非一個供生命居住的死寂岩石球體，而是一個由岩石圈、水圈、大氣圈與生物圈四重交織、共同呼吸與演化的動態有機整體。」</em></div>
+</div>
+<img alt="地球演化主題 Q 版角色插圖" class="slide-role" decoding="async" loading="lazy" src="../assets/role/10開心奔跑.png"/></div>
+</div>
+<!-- Bottom Controls -->
+<div class="controls">
+<button class="btn" id="prevBtn" title="上一頁 (←)">‹</button>
+<div class="slide-counter" id="slideCounter">1 / 15</div>
+<button class="btn" id="nextBtn" title="下一頁 (→ / Space)">›</button>
+<div style="width: 1px; height: 18px; background: rgba(255,255,255,0.2);"></div>
+<button class="btn-text" id="overviewBtn" title="導覽總覽 (O / Esc)">導覽</button>
+<button class="btn-text" id="fullscreenBtn" title="全螢幕切換 (F)">全螢幕</button>
+</div>
+<!-- Overview Modal Grid -->
+<div class="overview-grid" id="overviewGrid">
+<button class="close-overview" id="closeOverviewBtn">✕</button>
+<!-- Thumbnails dynamically injected by JS -->
+</div>
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progressBar');
+    const slideCounter = document.getElementById('slideCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const overviewBtn = document.getElementById('overviewBtn');
+    const closeOverviewBtn = document.getElementById('closeOverviewBtn');
+    const overviewGrid = document.getElementById('overviewGrid');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+
+      slides.forEach((slide, i) => {
+        if (i === currentIndex) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Update progress bar & counter
+      const progress = ((currentIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progress}%`;
+      slideCounter.textContent = `${currentIndex + 1} / ${totalSlides}`;
+
+      // Update overview active thumb if open
+      document.querySelectorAll('.thumb').forEach((thumb, i) => {
+        thumb.classList.toggle('active-thumb', i === currentIndex);
+      });
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) updateSlide(currentIndex - 1);
+    }
+
+    function nextSlide() {
+      if (currentIndex < totalSlides - 1) updateSlide(currentIndex + 1);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (overviewGrid.classList.contains('active')) {
+        if (e.key === 'Escape' || e.key.toLowerCase() === 'o') {
+          toggleOverview();
+        }
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        updateSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        updateSlide(totalSlides - 1);
+      } else if (e.key.toLowerCase() === 'o') {
+        toggleOverview();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // Overview Grid
+    function buildOverview() {
+      slides.forEach((slide, idx) => {
+        const thumb = document.createElement('div');
+        thumb.className = `thumb ${idx === currentIndex ? 'active-thumb' : ''}`;
+        const title = slide.getAttribute('data-title') || `投影片 ${idx + 1}`;
+        const h1 = slide.querySelector('h1') ? slide.querySelector('h1').innerText : '';
+        const subtitle = slide.querySelector('p.slide-subtitle') ? slide.querySelector('p.slide-subtitle').innerText : '';
+
+        thumb.innerHTML = `
+          <div class="thumb-num">SLIDE ${idx + 1}</div>
+          <div class="thumb-title">${title}</div>
+          <div class="thumb-desc">${subtitle || h1}</div>
+        `;
+
+        thumb.addEventListener('click', () => {
+          updateSlide(idx);
+          toggleOverview();
+        });
+
+        overviewGrid.appendChild(thumb);
+      });
+    }
+
+    function toggleOverview() {
+      overviewGrid.classList.toggle('active');
+    }
+
+    overviewBtn.addEventListener('click', toggleOverview);
+    closeOverviewBtn.addEventListener('click', toggleOverview);
+
+    // Fullscreen Toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    // Initial setup
+    buildOverview();
+    updateSlide(0);
+  </script>
+</body>
+</html>
